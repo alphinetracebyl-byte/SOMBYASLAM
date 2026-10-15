@@ -1,0 +1,77 @@
+spring:
+  application:
+    name: animal-registry-service
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    open-in-view: false
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        format_sql: false
+
+  flyway:
+    enabled: true
+    locations: classpath:db/migration
+    baseline-on-migrate: false
+    validate-on-migrate: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SOMLITS_KEYCLOAK_ISSUER_URI:http://localhost:8180/realms/somlits}
+
+management:
+  endpoints:
+    web:
+      base-path: /actuator
+      exposure:
+        include: health,info,loggers,metrics,prometheus,flyway
+  endpoint:
+    health:
+      probes:
+        enabled: true
+      show-details: when-authorized
+      group:
+        liveness:
+          include: livenessState
+        readiness:
+          include: readinessState,db,diskSpace
+  info:
+    env:
+      enabled: true
+
+info:
+  app:
+    name: ${spring.application.name}
+    version: "0.1.0-SNAPSHOT"
+    environment: ${SOMLITS_ENV:local}
+
+springdoc:
+  api-docs:
+    path: /internal/v1/api-docs
+  swagger-ui:
+    path: /internal/v1/swagger-ui
+
+somlits:
+  service:
+    name: ${spring.application.name}
+    version: "0.1.0-SNAPSHOT"
+  keycloak:
+    server-url: ${SOMLITS_KEYCLOAK_SERVER_URL:http://localhost:8180}
+    realm: ${SOMLITS_KEYCLOAK_REALM:somlits}
+  servicebus:
+    connection-string: ${SOMLITS_SERVICEBUS_CONNECTION_STRING:Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=localdev_only;UseDevelopmentEmulator=true;}
+    topic: somlits.animal-registry
+  outbox:
+    relay:
+      batch-size: 100
+      poll-interval-ms: 1000
+  photo:
+    storage:
+      base-url: ${SOMLITS_PHOTO_BASE_URL:http://localhost:8082/dev-photos}
+      container: animal-photos
+      sas-ttl-minutes: 15
+      max-size-bytes: 10485760

@@ -1,0 +1,221 @@
+name: somlits-local
+
+# Local development dependencies only.
+# Services (Spring Boot apps) run in the IDE or via ./mvnw spring-boot:run.
+# DO NOT commit real credentials — all values here are localdev_only placeholders.
+
+x-postgres-common: &postgres-common
+  image: postgres:16-alpine
+  restart: unless-stopped
+  environment:
+    POSTGRES_USER: somlits_dev
+    POSTGRES_PASSWORD: localdev_only
+  healthcheck:
+    test: ["CMD-SHELL", "pg_isready -U somlits_dev"]
+    interval: 10s
+    timeout: 5s
+    retries: 5
+
+services:
+
+  # ── PostgreSQL databases (one per service) ──────────────────────────────────
+
+  postgres-identity:
+    <<: *postgres-common
+    container_name: somlits-postgres-identity
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_identity_db
+    ports:
+      - "5433:5432"
+
+  postgres-owner-org:
+    <<: *postgres-common
+    container_name: somlits-postgres-owner-org
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_owner_org_db
+    ports:
+      - "5434:5432"
+
+  postgres-premises:
+    <<: *postgres-common
+    container_name: somlits-postgres-premises
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_premises_db
+    ports:
+      - "5435:5432"
+
+  postgres-tag-inventory:
+    <<: *postgres-common
+    container_name: somlits-postgres-tag-inventory
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_tag_inventory_db
+    ports:
+      - "5436:5432"
+
+  postgres-animal-registry:
+    <<: *postgres-common
+    container_name: somlits-postgres-animal-registry
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_animal_registry_db
+    ports:
+      - "5437:5432"
+
+  postgres-vet-health:
+    <<: *postgres-common
+    container_name: somlits-postgres-vet-health
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_vet_health_db
+    ports:
+      - "5438:5432"
+
+  postgres-movement:
+    <<: *postgres-common
+    container_name: somlits-postgres-movement
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_movement_db
+    ports:
+      - "5439:5432"
+
+  postgres-market-trade:
+    <<: *postgres-common
+    container_name: somlits-postgres-market-trade
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_market_trade_db
+    ports:
+      - "5440:5432"
+
+  postgres-quarantine-export:
+    <<: *postgres-common
+    container_name: somlits-postgres-quarantine-export
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_quarantine_export_db
+    ports:
+      - "5441:5432"
+
+  postgres-abattoir:
+    <<: *postgres-common
+    container_name: somlits-postgres-abattoir
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_abattoir_db
+    ports:
+      - "5442:5432"
+
+  postgres-certification:
+    <<: *postgres-common
+    container_name: somlits-postgres-certification
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_certification_db
+    ports:
+      - "5443:5432"
+
+  postgres-notification:
+    <<: *postgres-common
+    container_name: somlits-postgres-notification
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_notification_db
+    ports:
+      - "5444:5432"
+
+  postgres-reporting:
+    <<: *postgres-common
+    container_name: somlits-postgres-reporting
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_reporting_db
+    ports:
+      - "5445:5432"
+
+  postgres-audit:
+    <<: *postgres-common
+    container_name: somlits-postgres-audit
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_audit_db
+    ports:
+      - "5446:5432"
+
+  postgres-keycloak:
+    <<: *postgres-common
+    container_name: somlits-postgres-keycloak
+    environment:
+      POSTGRES_USER: somlits_dev
+      POSTGRES_PASSWORD: localdev_only
+      POSTGRES_DB: somlits_dev_keycloak_db
+    ports:
+      - "5447:5432"
+
+  # ── Keycloak ────────────────────────────────────────────────────────────────
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:25.0
+    container_name: somlits-keycloak
+    command: start-dev --import-realm
+    depends_on:
+      postgres-keycloak:
+        condition: service_healthy
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://postgres-keycloak:5432/somlits_dev_keycloak_db
+      KC_DB_USERNAME: somlits_dev
+      KC_DB_PASSWORD: localdev_only
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: localdev_only
+      KC_HOSTNAME_STRICT: "false"
+      KC_HOSTNAME_STRICT_HTTPS: "false"
+      KC_HTTP_ENABLED: "true"
+    volumes:
+      - ./infra/keycloak/realm-export.json:/opt/keycloak/data/import/somlits-realm.json
+    ports:
+      - "8180:8080"
+    healthcheck:
+      test: ["CMD-SHELL", "curl -sf http://localhost:8080/realms/somlits/.well-known/openid-configuration || exit 1"]
+      interval: 15s
+      timeout: 10s
+      retries: 10
+      start_period: 30s
+
+  # ── Azure Service Bus Emulator ───────────────────────────────────────────────
+
+  servicebus-emulator:
+    image: mcr.microsoft.com/azure-messaging/servicebus-emulator:latest
+    container_name: somlits-servicebus-emulator
+    ports:
+      - "5672:5672"   # AMQP
+      - "5300:5300"   # Management HTTP
+
+  # ── WireMock (external API stubs) ───────────────────────────────────────────
+
+  wiremock:
+    image: wiremock/wiremock:3.9.1
+    container_name: somlits-wiremock
+    volumes:
+      - ./infra/wiremock/mappings:/home/wiremock/mappings
+    ports:
+      - "8888:8080"
+    command: --verbose --global-response-templating

@@ -1,0 +1,269 @@
+<!--
+  SOMLITS Azure API Management — Global Inbound Policy
+  Applied at: All APIs in the SOMLITS APIM instance
+  Scope: Inbound processing pipeline
+
+  Pipeline order:
+    1. Correlation ID — generate or propagate X-Correlation-ID
+    2. JWT validation — verify Keycloak-issued bearer token
+    3. Rate limiting — per-subscription, per-product limits
+    4. IP restriction — Ministry product: allowlist only
+    5. Request logging — structured log to App Insights
+    6. Backend routing — set backend URL from named value
+    7. Header hygiene — strip internal headers before forwarding
+
+  On-error: always return RFC 7807 Problem Details (never raw APIM errors).
+-->
+<policies>
+  <inbound>
+    <base />
+
+    <!-- ── 1. Correlation ID ──────────────────────────────────────────────── -->
+    <choose>
+      <when condition="@(context.Request.Headers.ContainsKey("X-Correlation-ID")
+                         && System.Text.RegularExpressions.Regex.IsMatch(
+                              context.Request.Headers.GetValueOrDefault("X-Correlation-ID", ""),
+                              @"^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$",
+                              System.Text.RegularExpressions.RegexOptions.IgnoreCase))">
+        <!-- Keep valid UUID v4 from caller -->
+        <set-variable name="correlationId"
+                      value="@(context.Request.Headers.GetValueOrDefault("X-Correlation-ID", ""))" />
+      </when>
+      <otherwise>
+        <!-- Generate new UUID v4 -->
+        <set-variable name="correlationId" value="@(Guid.NewGuid().ToString())" />
+      </otherwise>
+    </choose>
+    <set-header name="X-Correlation-ID" exists-action="override">
+      <value>@((string)context.Variables["correlationId"])</value>
+    </set-header>
+
+    <!-- ── 2. JWT Validation ──────────────────────────────────────────────── -->
+    <!--
+      Skip JWT validation on public paths:
+        - /v1/actuator/health
+        - /v1/auth/register
+        - /v1/auth/verify-otp
+        - /v1/auth/forgot-password
+        - /v1/auth/reset-password
+        - /v1/invitations/{code}/accept
+    -->
+    <choose>
+      <when condition="@{
+        var path = context.Request.Url.Path.ToLower();
+        return path.EndsWith("/actuator/health")
+            || path.EndsWith("/actuator/info")
+            || path.Contains("/auth/register")
+            || path.Contains("/auth/verify-otp")
+            || path.Contains("/auth/forgot-password")
+            || path.Contains("/auth/reset-password")
+            || System.Text.RegularExpressions.Regex.IsMatch(path, @"/invitations/[^/]+/accept");
+      }">
+        <!-- Public endpoint — skip JWT check -->
+      </when>
+      <otherwise>
+        <validate-jwt header-name="Authorization" failed-validation-httpcode="401"
+                      failed-validation-error-message="Unauthorized — missing or invalid token"
+                      require-expiration-time="true"
+                      require-scheme="Bearer"
+                      require-signed-tokens="true"
+                      output-token-variable-name="jwt">
+          <openid-config url="{{keycloak-issuer-uri}}/.well-known/openid-configuration" />
+          <audiences>
+            <audience>somlits-farmer</audience>
+            <audience>somlits-field</audience>
+            <audience>somlits-ministry</audience>
+            <audience>somlits-service-account</audience>
+          </audiences>
+          <issuers>
+            <issuer>{{keycloak-issuer-uri}}</issuer>
+          </issuers>
+          <required-claims>
+            <claim name="sub" match="any" />
+          </required-claims>
+        </validate-jwt>
+      </otherwise>
+    </choose>
+
+    <!-- ── 3. Rate Limiting ───────────────────────────────────────────────── -->
+    <!--
+      Product-level rate limits (configured per APIM product):
+        somlits-farmer   : 60 calls/min per subscription
+        somlits-field    : 120 calls/min per subscription
+        somlits-ministry : 300 calls/min per subscription
+        somlits-internal : 600 calls/min per subscription (service-to-service)
+    -->
+    <rate-limit-by-key calls="60"
+                       renewal-period="60"
+                       counter-key="@(context.Subscription?.Id ?? context.Request.IpAddress)"
+                       increment-condition="@(context.Response.StatusCode < 500)"
+                       retry-after-header-name="Retry-After" />
+
+    <!-- ── 4. IP Restriction (Ministry product only) ──────────────────────── -->
+    <!--
+      The Ministry platform is restricted to government IP ranges.
+      Named value "ministry-allowed-ip-ranges" is a comma-separated CIDR list
+      maintained in Key Vault and surfaced as an APIM named value.
+    -->
+    <choose>
+      <when condition="@(context.Product?.Name == "somlits-ministry")">
+        <ip-filter action="allow">
+          <!-- Mogadishu government data center -->
+          <address-range from="{{ministry-ip-range-start-1}}" to="{{ministry-ip-range-end-1}}" />
+          <!-- Regional office VPN exit nodes -->
+          <address-range from="{{ministry-ip-range-start-2}}" to="{{ministry-ip-range-end-2}}" />
+        </ip-filter>
+      </when>
+    </choose>
+
+    <!-- ── 5. Request Logging ─────────────────────────────────────────────── -->
+    <log-to-eventhub logger-id="somlits-app-insights" partition-id="0">@{
+      return new JObject(
+        new JProperty("eventTime",      DateTime.UtcNow.ToString("o")),
+        new JProperty("correlationId",  (string)context.Variables["correlationId"]),
+        new JProperty("method",         context.Request.Method),
+        new JProperty("path",           context.Request.Url.Path),
+        new JProperty("product",        context.Product?.Name ?? "unknown"),
+        new JProperty("subscriptionId", context.Subscription?.Id ?? "anonymous"),
+        new JProperty("clientIp",       context.Request.IpAddress)
+      ).ToString();
+    }</log-to-eventhub>
+
+    <!-- ── 6. Backend URL Routing ─────────────────────────────────────────── -->
+    <!--
+      Backend URLs are stored as APIM named values (sourced from Key Vault).
+      Pattern: somlits-{service}-backend-url
+      Example: somlits-animal-registry-backend-url = https://somlits-dev-animal-registry.{aca-domain}
+    -->
+    <set-backend-service base-url="@{
+      var path = context.Request.Url.Path.ToLower();
+      if (path.StartsWith("/v1/animals"))              return "{{somlits-animal-registry-backend-url}}";
+      if (path.StartsWith("/v1/tags"))                 return "{{somlits-tag-inventory-backend-url}}";
+      if (path.StartsWith("/v1/premises"))             return "{{somlits-premises-backend-url}}";
+      if (path.StartsWith("/v1/owners"))               return "{{somlits-owner-org-backend-url}}";
+      if (path.StartsWith("/v1/movements"))            return "{{somlits-movement-backend-url}}";
+      if (path.StartsWith("/v1/health-events"))        return "{{somlits-veterinary-health-backend-url}}";
+      if (path.StartsWith("/v1/market-sessions"))      return "{{somlits-market-trade-backend-url}}";
+      if (path.StartsWith("/v1/trades"))               return "{{somlits-market-trade-backend-url}}";
+      if (path.StartsWith("/v1/quarantine"))           return "{{somlits-quarantine-export-backend-url}}";
+      if (path.StartsWith("/v1/slaughter"))            return "{{somlits-abattoir-backend-url}}";
+      if (path.StartsWith("/v1/certificates"))         return "{{somlits-certification-backend-url}}";
+      if (path.StartsWith("/v1/notifications"))        return "{{somlits-notification-backend-url}}";
+      if (path.StartsWith("/v1/reports"))              return "{{somlits-reporting-backend-url}}";
+      if (path.StartsWith("/v1/traceability"))         return "{{somlits-reporting-backend-url}}";
+      if (path.StartsWith("/v1/audit"))                return "{{somlits-audit-backend-url}}";
+      if (path.StartsWith("/v1/users")
+          || path.StartsWith("/v1/auth")
+          || path.StartsWith("/v1/invitations")
+          || path.StartsWith("/v1/delegations"))       return "{{somlits-identity-access-backend-url}}";
+      return "{{somlits-identity-access-backend-url}}";
+    }" />
+
+    <!-- ── 7. Header Hygiene ──────────────────────────────────────────────── -->
+    <!-- Forward correlation ID; strip headers that must not reach backends -->
+    <set-header name="X-Correlation-ID" exists-action="override">
+      <value>@((string)context.Variables["correlationId"])</value>
+    </set-header>
+    <set-header name="X-Forwarded-For" exists-action="delete" />
+    <set-header name="X-APIM-Subscription-Id" exists-action="delete" />
+
+  </inbound>
+
+  <backend>
+    <base />
+  </backend>
+
+  <outbound>
+    <base />
+    <!-- Echo correlation ID on every response so clients can correlate logs -->
+    <set-header name="X-Correlation-ID" exists-action="override">
+      <value>@((string)context.Variables["correlationId"])</value>
+    </set-header>
+    <!-- Remove server fingerprint headers -->
+    <set-header name="Server" exists-action="delete" />
+    <set-header name="X-Powered-By" exists-action="delete" />
+    <set-header name="X-AspNet-Version" exists-action="delete" />
+  </outbound>
+
+  <on-error>
+    <base />
+    <!--
+      Map APIM-level errors to RFC 7807 Problem Details.
+      Backend errors pass through as-is (Spring GlobalExceptionHandler already formats them).
+    -->
+    <choose>
+      <when condition="@(context.LastError.Source == "validate-jwt")">
+        <return-response>
+          <set-status code="401" reason="Unauthorized" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/problem+json</value>
+          </set-header>
+          <set-body>@{
+            return new JObject(
+              new JProperty("type",       "https://somlits.gov.so/errors/unauthorized"),
+              new JProperty("title",      "Unauthorized"),
+              new JProperty("status",     401),
+              new JProperty("detail",     context.LastError.Message),
+              new JProperty("instance",   context.Request.Url.Path),
+              new JProperty("traceId",    (string)context.Variables["correlationId"])
+            ).ToString();
+          }</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.LastError.Source == "rate-limit-by-key")">
+        <return-response>
+          <set-status code="429" reason="Too Many Requests" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/problem+json</value>
+          </set-header>
+          <set-body>@{
+            return new JObject(
+              new JProperty("type",       "https://somlits.gov.so/errors/rate-limit-exceeded"),
+              new JProperty("title",      "Too Many Requests"),
+              new JProperty("status",     429),
+              new JProperty("detail",     "Rate limit exceeded. Please retry after the indicated interval."),
+              new JProperty("instance",   context.Request.Url.Path),
+              new JProperty("traceId",    (string)context.Variables["correlationId"])
+            ).ToString();
+          }</set-body>
+        </return-response>
+      </when>
+      <when condition="@(context.LastError.Source == "ip-filter")">
+        <return-response>
+          <set-status code="403" reason="Forbidden" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/problem+json</value>
+          </set-header>
+          <set-body>@{
+            return new JObject(
+              new JProperty("type",       "https://somlits.gov.so/errors/forbidden"),
+              new JProperty("title",      "Forbidden"),
+              new JProperty("status",     403),
+              new JProperty("detail",     "Access is not permitted from this network location."),
+              new JProperty("instance",   context.Request.Url.Path),
+              new JProperty("traceId",    (string)context.Variables["correlationId"])
+            ).ToString();
+          }</set-body>
+        </return-response>
+      </when>
+      <otherwise>
+        <return-response>
+          <set-status code="500" reason="Internal Server Error" />
+          <set-header name="Content-Type" exists-action="override">
+            <value>application/problem+json</value>
+          </set-header>
+          <set-body>@{
+            return new JObject(
+              new JProperty("type",       "https://somlits.gov.so/errors/internal-error"),
+              new JProperty("title",      "Internal Server Error"),
+              new JProperty("status",     500),
+              new JProperty("detail",     "An unexpected error occurred. Please quote the traceId when contacting support."),
+              new JProperty("instance",   context.Request.Url.Path),
+              new JProperty("traceId",    (string)context.Variables["correlationId"])
+            ).ToString();
+          }</set-body>
+        </return-response>
+      </otherwise>
+    </choose>
+  </on-error>
+</policies>

@@ -1,0 +1,155 @@
+openapi: "3.1.0"
+info:
+  title: SOMLITS Error Type Registry
+  version: "1.0.0"
+  description: >
+    Canonical list of RFC 7807 Problem Details error types used across all SOMLITS
+    services. Every `type` URI is stable and versioned. Services MUST NOT invent
+    ad-hoc type URIs outside this registry.
+
+components:
+  schemas:
+
+    ProblemDetail:
+      type: object
+      required: [type, title, status, detail, instance, traceId]
+      properties:
+        type:
+          type: string
+          format: uri
+          description: Stable URI identifying the error class (see registry below)
+          example: "https://somlits.gov.so/errors/animal-not-found"
+        title:
+          type: string
+          description: Short human-readable summary of the error class (never changes for a given type)
+          example: "Animal Not Found"
+        status:
+          type: integer
+          description: HTTP status code
+          example: 404
+        detail:
+          type: string
+          description: Human-readable explanation specific to this occurrence
+          example: "No animal found with ID 3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        instance:
+          type: string
+          description: URI of the specific request that caused the error
+          example: "/v1/animals/3fa85f64-5717-4562-b3fc-2c963f66afa6"
+        traceId:
+          type: string
+          description: X-Correlation-ID from the request for log correlation
+          example: "a1b2c3d4-e5f6-7890-abcd-ef1234567890"
+        errors:
+          type: array
+          description: Field-level validation errors (400 only)
+          items:
+            $ref: '#/components/schemas/FieldError'
+
+    FieldError:
+      type: object
+      required: [field, code, message]
+      properties:
+        field:
+          type: string
+          example: "phoneNumber"
+        code:
+          type: string
+          example: "INVALID_FORMAT"
+        message:
+          type: string
+          example: "Phone number must be in E.164 format"
+
+# ─── Error Type Registry ──────────────────────────────────────────────────────
+#
+# Format:  https://somlits.gov.so/errors/{kebab-case-name}
+# Status:  HTTP status code returned for this error type
+# Service: Which service(s) produce this error type
+# Rule:    Business rule code (if applicable)
+#
+# ┌─────────────────────────────────────────────────────────────────────────────┐
+# │ 4xx Client Errors                                                           │
+# └─────────────────────────────────────────────────────────────────────────────┘
+#
+# 400 Bad Request — Validation
+#   https://somlits.gov.so/errors/validation-failed
+#     Produced by: all services
+#     Use: request body or query parameter fails @Valid constraints
+#
+# 401 Unauthorized
+#   https://somlits.gov.so/errors/unauthorized
+#     Produced by: all services
+#     Use: missing or expired JWT
+#
+# 403 Forbidden
+#   https://somlits.gov.so/errors/forbidden
+#     Produced by: all services
+#     Use: authenticated but insufficient role or territory scope
+#
+# 404 Not Found
+#   https://somlits.gov.so/errors/animal-not-found          (animal-registry-service)
+#   https://somlits.gov.so/errors/tag-not-found             (tag-inventory-service)
+#   https://somlits.gov.so/errors/premises-not-found        (premises-service)
+#   https://somlits.gov.so/errors/owner-not-found           (owner-org-service)
+#   https://somlits.gov.so/errors/movement-not-found        (movement-service)
+#   https://somlits.gov.so/errors/health-event-not-found    (veterinary-health-service)
+#   https://somlits.gov.so/errors/user-not-found            (identity-access-service)
+#   https://somlits.gov.so/errors/invitation-not-found      (identity-access-service)
+#   https://somlits.gov.so/errors/certificate-not-found     (certification-service)
+#   https://somlits.gov.so/errors/quarantine-zone-not-found (quarantine-export-service)
+#   https://somlits.gov.so/errors/market-session-not-found  (market-trade-service)
+#   https://somlits.gov.so/errors/trade-not-found           (market-trade-service)
+#   https://somlits.gov.so/errors/slaughter-record-not-found (abattoir-service)
+#
+# 409 Conflict
+#   https://somlits.gov.so/errors/tag-already-active        (tag-inventory-service)   BR-TAG-001
+#   https://somlits.gov.so/errors/animal-already-tagged     (animal-registry-service) BR-ANI-004
+#   https://somlits.gov.so/errors/premises-code-duplicate   (premises-service)        BR-PRE-002
+#   https://somlits.gov.so/errors/phone-number-taken        (identity-access-service) BR-IAM-006
+#   https://somlits.gov.so/errors/optimistic-lock-conflict  (all services)
+#
+# 410 Gone
+#   https://somlits.gov.so/errors/invitation-expired        (identity-access-service) BR-IAM-013
+#
+# 422 Unprocessable Entity — Business Rule Violations
+#   https://somlits.gov.so/errors/animal-terminal-status    (animal-registry-service) BR-ANI-001
+#     Use: attempted state change on DEAD/SLAUGHTERED/EXPORTED animal
+#   https://somlits.gov.so/errors/animal-not-on-premises    (animal-registry-service) BR-ANI-002
+#     Use: movement origin does not match current premises
+#   https://somlits.gov.so/errors/health-restriction-active (movement-service)        BR-MOV-005
+#     Use: animal has an active health restriction blocking movement
+#   https://somlits.gov.so/errors/premises-not-approved     (movement-service)        BR-MOV-004
+#     Use: destination premises is not in APPROVED/ACTIVE status
+#   https://somlits.gov.so/errors/movement-already-final    (movement-service)
+#     Use: attempt to modify a COMPLETED/REJECTED/CANCELLED movement
+#   https://somlits.gov.so/errors/owner-mismatch            (animal-registry-service) BR-ANI-003
+#     Use: caller does not own the animal
+#   https://somlits.gov.so/errors/account-locked            (identity-access-service) BR-IAM-015
+#   https://somlits.gov.so/errors/account-not-active        (identity-access-service) BR-IAM-016
+#   https://somlits.gov.so/errors/delegate-scope-exceeded   (identity-access-service) BR-IAM-020
+#   https://somlits.gov.so/errors/role-hierarchy-violation  (identity-access-service) BR-IAM-007
+#   https://somlits.gov.so/errors/invalid-otp              (identity-access-service)
+#   https://somlits.gov.so/errors/otp-attempts-exhausted   (identity-access-service) BR-IAM-014
+#   https://somlits.gov.so/errors/tag-not-in-stock          (tag-inventory-service)   BR-TAG-003
+#   https://somlits.gov.so/errors/batch-not-allocated       (tag-inventory-service)
+#   https://somlits.gov.so/errors/quarantine-zone-active    (quarantine-export-service)
+#   https://somlits.gov.so/errors/export-health-cert-missing (quarantine-export-service)
+#
+# 429 Too Many Requests
+#   https://somlits.gov.so/errors/rate-limit-exceeded       (APIM gateway)
+#
+# ┌─────────────────────────────────────────────────────────────────────────────┐
+# │ 5xx Server Errors                                                           │
+# └─────────────────────────────────────────────────────────────────────────────┘
+#
+# 500 Internal Server Error
+#   https://somlits.gov.so/errors/internal-error            (all services)
+#     Use: unhandled exception — never include stack trace in response body
+#
+# 502 Bad Gateway
+#   https://somlits.gov.so/errors/upstream-unavailable      (all services)
+#     Use: downstream service call failed
+#
+# 503 Service Unavailable
+#   https://somlits.gov.so/errors/service-unavailable       (APIM / health check)
+#
+# ─── End Registry ─────────────────────────────────────────────────────────────

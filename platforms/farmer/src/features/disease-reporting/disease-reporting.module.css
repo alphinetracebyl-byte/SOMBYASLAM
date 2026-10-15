@@ -1,0 +1,811 @@
+/* ── Page layout ─────────────────────────────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  padding-bottom: 3rem;
+}
+
+.pageLayout {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+/* Success screen uses same horizontal layout */
+.successOuter {
+  display: grid;
+  grid-template-columns: 1fr 360px;
+  gap: 1.25rem;
+  align-items: start;
+}
+
+.formSide  { display: flex; flex-direction: column; gap: 1.25rem; }
+.rightSide { display: flex; flex-direction: column; gap: 1.25rem; }
+
+/* ── Card base (mirrors dashboard.module.css exactly) ────────── */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 1px 8px rgba(0,0,0,0.04);
+  border: 1px solid #e5e7eb;
+}
+
+.cardHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 1rem;
+}
+
+.cardTitle {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.cardSub {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.cardBadge {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem;
+  background: #f1f5f9;
+  color: #64748b;
+  border-radius: 20px;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+/* ── Step progress bar ───────────────────────────────────────── */
+.stepBar {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 1.75rem;
+  gap: 0;
+}
+
+.stepBarItem {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  flex: 1;
+}
+
+.stepDot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  color: #94a3b8;
+  border: 2px solid #e2e8f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.75rem;
+  font-weight: 700;
+  z-index: 1;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+}
+
+.stepDotActive {
+  background: #0f2170;
+  border-color: #0f2170;
+  color: #fff;
+}
+
+.stepDotCompleted {
+  background: #f0fdf4;
+  border-color: #16a34a;
+  color: #16a34a;
+}
+
+.stepLabel {
+  font-size: 0.6875rem;
+  color: #94a3b8;
+  font-weight: 500;
+  margin-top: 5px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.stepLabelActive {
+  color: #0f2170;
+  font-weight: 700;
+}
+
+.stepConnector {
+  position: absolute;
+  top: 13px;
+  left: 50%;
+  width: 100%;
+  height: 2px;
+  background: #e2e8f0;
+  z-index: 0;
+}
+
+.stepConnectorDone {
+  background: #16a34a;
+}
+
+/* ── Step body ───────────────────────────────────────────────── */
+.stepBody {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.stepHeadRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* ── Field labels & inputs ───────────────────────────────────── */
+.fieldLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #374151;
+  margin-bottom: -0.25rem;
+}
+
+.optionalNote {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #94a3b8;
+  margin-left: 0.25rem;
+}
+
+.textInput {
+  width: 100%;
+  padding: 0.5625rem 0.875rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #0f172a;
+  background: #fff;
+  font-family: inherit;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.textInput:focus {
+  outline: none;
+  border-color: #0f2170;
+  box-shadow: 0 0 0 3px rgba(15,33,112,0.08);
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.5625rem 0.875rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #0f172a;
+  background: #fff;
+  font-family: inherit;
+  resize: vertical;
+  transition: border-color 0.15s;
+  box-sizing: border-box;
+}
+
+.textarea:focus {
+  outline: none;
+  border-color: #0f2170;
+  box-shadow: 0 0 0 3px rgba(15,33,112,0.08);
+}
+
+/* ── Species grid ────────────────────────────────────────────── */
+.speciesGrid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.75rem;
+}
+
+.speciesCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.875rem 0.5rem;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.speciesCard:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.speciesCardOn {
+  background: #eff6ff;
+  border-color: #0f2170;
+}
+
+.speciesEmoji {
+  font-size: 1.625rem;
+  line-height: 1;
+}
+
+.speciesLabel {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+}
+
+.speciesCardOn .speciesLabel {
+  color: #0f2170;
+}
+
+/* ── Tag chips ───────────────────────────────────────────────── */
+.tagInputRow {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+}
+
+.tagInputRow .textInput {
+  flex: 1;
+}
+
+.tagAddBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0 0.875rem;
+  background: #0f2170;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.tagAddBtn:hover { background: #0a1a5c; }
+
+.tagChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.tagChip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.2rem 0.5rem 0.2rem 0.625rem;
+  border-radius: 20px;
+  font-family: monospace;
+}
+
+.tagChipX {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #93c5fd;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.15s;
+}
+
+.tagChipX:hover { color: #dc2626; }
+
+/* ── Symptoms ────────────────────────────────────────────────── */
+.symptomsGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.groupLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #94a3b8;
+  padding: 0.5rem 0 0.25rem;
+  border-bottom: 1px solid #f1f5f9;
+  margin-bottom: 0.25rem;
+}
+
+.checkRow {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.375rem 0.25rem;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.checkRow:hover { background: #f8fafc; }
+
+.checkInput {
+  width: 16px;
+  height: 16px;
+  accent-color: #0f2170;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.checkText {
+  font-size: 0.875rem;
+  color: #374151;
+  line-height: 1.3;
+}
+
+/* ── Severity ────────────────────────────────────────────────── */
+.severityGrid {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.severityCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  padding: 0.875rem;
+  background: #f8fafc;
+  border: 2px solid #e2e8f0;
+  border-radius: 10px;
+  cursor: pointer;
+  text-align: left;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.severityCard:hover {
+  background: #f1f5f9;
+  border-color: #cbd5e1;
+}
+
+.severityCardOn {
+  background: #eff6ff;
+  border-color: #0f2170;
+}
+
+.severityLabel {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: block;
+}
+
+.severityCardOn .severityLabel { color: #0f2170; }
+
+.severityDesc {
+  font-size: 0.6875rem;
+  color: #64748b;
+  line-height: 1.4;
+  display: block;
+}
+
+/* ── Photo placeholder ───────────────────────────────────────── */
+.photoPlaceholder {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 0.875rem 1rem;
+  background: #f8fafc;
+  border: 1.5px dashed #cbd5e1;
+  border-radius: 10px;
+}
+
+.photoIcon { font-size: 1.375rem; line-height: 1; }
+
+.photoText {
+  font-size: 0.8125rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* ── Review card ─────────────────────────────────────────────── */
+.reviewCard {
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.reviewSection {
+  padding: 0.875rem 1rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.reviewSection:last-child { border-bottom: none; }
+
+.reviewSectionTitle {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #0f2170;
+  margin-bottom: 0.5rem;
+}
+
+.reviewRow {
+  display: flex;
+  gap: 0.75rem;
+  font-size: 0.8125rem;
+  color: #374151;
+  margin-bottom: 0.25rem;
+}
+
+.reviewRow:last-child { margin-bottom: 0; }
+
+.reviewKey {
+  font-weight: 600;
+  color: #64748b;
+  min-width: 90px;
+  flex-shrink: 0;
+}
+
+.reviewVal { color: #0f172a; }
+
+.reviewSymptoms {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.reviewSymptomChip {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  color: #1d4ed8;
+  font-size: 0.6875rem;
+  font-weight: 500;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+}
+
+/* ── Warning note ────────────────────────────────────────────── */
+.warningNote {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.625rem;
+  padding: 0.875rem 1rem;
+  background: #fffbeb;
+  border: 1.5px solid #fcd34d;
+  border-radius: 10px;
+  font-size: 0.8125rem;
+  color: #92400e;
+  line-height: 1.45;
+}
+
+/* ── Navigation buttons ──────────────────────────────────────── */
+.stepNav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 0.75rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.btnBack {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5625rem 1.25rem;
+  background: #fff;
+  color: #374151;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.btnBack:hover { background: #f8fafc; border-color: #9ca3af; }
+
+.btnNext {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5625rem 1.5rem;
+  background: #0f2170;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btnNext:hover:not(:disabled) { background: #0a1a5c; }
+
+.btnNext:disabled {
+  background: #cbd5e1;
+  cursor: not-allowed;
+}
+
+.btnSubmit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5625rem 1.5rem;
+  background: #dc2626;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btnSubmit:hover { background: #b91c1c; }
+
+/* ── My Reports (right panel) ────────────────────────────────── */
+.caseList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.caseItem {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.75rem;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  transition: background 0.12s;
+}
+
+.caseItem:hover { background: #f1f5f9; }
+
+.caseTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.caseCode {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #0f172a;
+  font-family: monospace;
+}
+
+.caseBadge {
+  font-size: 0.625rem;
+  font-weight: 700;
+  padding: 0.15rem 0.5rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  white-space: nowrap;
+}
+
+.caseMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: #64748b;
+}
+
+.caseMetaDot {
+  color: #cbd5e1;
+}
+
+/* ── What happens next ───────────────────────────────────────── */
+.nextSteps {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.nextStep {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.875rem;
+}
+
+.nextStepIcon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.nextStepIcon > svg {
+  width: 30px;
+  height: 30px;
+  padding: 7px;
+  background: #eff6ff;
+  color: #1d4ed8;
+  border-radius: 50%;
+  flex-shrink: 0;
+  box-sizing: border-box;
+}
+
+.nextStepLine {
+  width: 2px;
+  height: 32px;
+  background: #e2e8f0;
+  margin: 4px 0;
+  align-self: center;
+}
+
+.nextStepText {
+  padding-top: 4px;
+  padding-bottom: 1rem;
+}
+
+.nextStepLabel {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.nextStepDesc {
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 2px;
+  line-height: 1.4;
+}
+
+/* ── Success screen ──────────────────────────────────────────── */
+.successScreen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 2.5rem 2rem;
+  gap: 1rem;
+}
+
+.successIcon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background: #f0fdf4;
+  border-radius: 50%;
+}
+
+.successTitle {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.caseIdDisplay {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.25rem;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.75rem 2rem;
+  width: 100%;
+}
+
+.caseIdLabel {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+}
+
+.caseIdValue {
+  font-size: 1.5rem;
+  font-weight: 800;
+  color: #0f2170;
+  font-family: monospace;
+  letter-spacing: 0.05em;
+}
+
+.successSub {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+.timelineWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 320px;
+  gap: 0;
+  margin: 0.5rem 0;
+}
+
+.timelineRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.timelineDotWrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+.timelineDot {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  background: #eff6ff;
+  color: #1d4ed8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.timelineConnector {
+  width: 2px;
+  height: 24px;
+  background: #e2e8f0;
+  margin: 3px 0;
+}
+
+.timelineLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #374151;
+  padding-top: 5px;
+  padding-bottom: 16px;
+}
+
+.successActions {
+  display: flex;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding-top: 0.5rem;
+}
+
+/* ── Responsive ──────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .pageLayout  { grid-template-columns: 1fr; }
+  .successOuter { grid-template-columns: 1fr; }
+  .speciesGrid { grid-template-columns: repeat(2, 1fr); }
+  .severityGrid { flex-direction: column; }
+}

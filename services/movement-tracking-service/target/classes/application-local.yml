@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/somlits_dev_movement_tracking_db
+    username: somlits_dev
+    password: localdev_only
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8180/realms/somlits/protocol/openid-connect/certs
+
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          enabled: false
+
+server:
+  port: 8083
+
+logging:
+  level:
+    com.somlits: DEBUG
+    org.springframework.security: INFO
+    org.hibernate.SQL: DEBUG

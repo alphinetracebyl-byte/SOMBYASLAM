@@ -1,0 +1,125 @@
+.page     { display: flex; flex-direction: column; gap: 1rem; }
+.pageHead { }
+.pageTitle { font-size: 1.125rem; font-weight: 800; color: #0f172a; margin: 0 0 0.2rem; }
+.pageSub   { font-size: 0.8rem; color: #64748b; margin: 0; }
+.loading   { color: #94a3b8; font-size: 0.875rem; }
+
+/* Two-column grid */
+.grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+.colLeft  { display: flex; flex-direction: column; gap: 1rem; }
+.colRight { display: flex; flex-direction: column; gap: 1rem; }
+
+/* Section card */
+.section {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.sectionTitle {
+  display: flex; align-items: center; gap: 0.625rem;
+  font-size: 0.625rem; font-weight: 700; color: #64748b;
+  text-transform: uppercase; letter-spacing: 0.08em;
+  padding: 0.625rem 1.5rem;
+  border-bottom: 1px solid #e2e8f0;
+  background: #f8fafc;
+}
+
+.rowNum {
+  width: 22px; height: 22px; border-radius: 50%;
+  background: #1e40af;
+  color: #fff; font-size: 0.7rem; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+
+/* Vertical setting block */
+.settingRow {
+  padding: 1rem 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+.settingInfo  { }
+.settingLabel { font-size: 0.875rem; font-weight: 700; color: #0f172a; }
+.settingDesc  { font-size: 0.75rem; color: #94a3b8; margin-top: 0.15rem; line-height: 1.4; }
+
+/* Mode cards — side by side, equal width */
+.modeCards {
+  display: flex;
+  flex-direction: row;
+  gap: 0.75rem;
+}
+
+.modeCard {
+  position: relative;
+  flex: 1;
+  display: flex; flex-direction: column; align-items: flex-start;
+  gap: 0.2rem;
+  padding: 0.875rem 1rem 0.875rem 1rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 10px;
+  background: #f8fafc;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.15s, background 0.15s;
+  text-align: left;
+}
+.modeCard:hover  { border-color: #cbd5e1; background: #fff; }
+.modeCardActive  { border-color: #2563eb; background: #eff6ff; }
+.modeIcon  { font-size: 1.25rem; margin-bottom: 0.3rem; }
+.modeName  { font-size: 0.8125rem; font-weight: 700; color: #0f172a; }
+.modeHint  { font-size: 0.75rem; color: #64748b; line-height: 1.45; margin-top: 0.25rem; display: block; }
+.modeCheck {
+  position: absolute; top: 0.625rem; right: 0.625rem;
+  width: 16px; height: 16px; border-radius: 50%;
+  background: #2563eb; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 0.5rem; font-weight: 900;
+}
+
+/* Save button row */
+.settingActions {
+  display: flex;
+  justify-content: flex-end;
+}
+.btnSave {
+  padding: 0.4rem 1.25rem; border-radius: 7px;
+  background: #2563eb; color: #fff;
+  font-size: 0.8rem; font-weight: 700;
+  border: none; cursor: pointer; font-family: inherit;
+  transition: background 0.15s;
+}
+.btnSave:hover:not(:disabled) { background: #1d4ed8; }
+.btnSave:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Input-style rows (Delivery Company) */
+.inputSection { padding: 1rem 1.5rem 1.25rem; display: flex; flex-direction: column; gap: 0.625rem; }
+.inputRow { display: flex; align-items: center; gap: 1rem; }
+.inputLabel { font-size: 0.8125rem; font-weight: 600; color: #374151; min-width: 130px; flex-shrink: 0; }
+.input {
+  flex: 1; padding: 0.45rem 0.75rem;
+  border: 1.5px solid #e2e8f0; border-radius: 7px;
+  font-size: 0.8125rem; font-family: inherit; color: #0f172a; outline: none;
+}
+.input:focus { border-color: #2563eb; }
+.inputActions { display: flex; justify-content: flex-end; padding-top: 0.25rem; }
+
+/* Toast */
+.toast {
+  position: fixed; bottom: 2rem; right: 2rem;
+  background: #0f172a; color: #fff;
+  padding: 0.625rem 1.125rem; border-radius: 8px;
+  font-size: 0.8125rem; font-weight: 600;
+  box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+  z-index: 600; animation: toastIn 0.2s ease;
+}
+.toastErr { background: #dc2626; }
+@keyframes toastIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }

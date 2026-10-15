@@ -1,0 +1,330 @@
+/* ============================================================
+   Slaughter — CSS Module
+   ============================================================ */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ---- Header ---- */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.25rem;
+}
+
+.sub {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ---- Tabs ---- */
+.tabs {
+  display: flex;
+  gap: 0.5rem;
+  border-bottom: 2px solid #e2e8f0;
+}
+
+.tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 0.5rem 1rem;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #64748b;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  border-radius: 4px 4px 0 0;
+}
+
+.tab:hover { color: #0f172a; }
+
+.tabActive {
+  color: #0b5ed7;
+  border-bottom-color: #0b5ed7;
+  font-weight: 600;
+}
+
+/* ---- Banners ---- */
+.successBanner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+.errorBanner {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+/* ---- Loading / Empty ---- */
+.loading {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #64748b;
+  font-size: 0.9375rem;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  color: #94a3b8;
+  font-size: 0.9375rem;
+}
+
+/* ---- Section title ---- */
+.sectionTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.875rem;
+}
+
+/* ---- Form card ---- */
+.formCard {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  padding: 1.5rem;
+}
+
+.formGrid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+@media (max-width: 580px) {
+  .formGrid { grid-template-columns: 1fr; }
+}
+
+/* ---- Form fields ---- */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.input {
+  width: 100%;
+  height: 40px;
+  padding: 0 0.875rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #0f172a;
+  background: #f8fafc;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.input:focus {
+  border-color: #0b5ed7;
+  box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.12);
+  background: #fff;
+}
+
+.textarea {
+  width: 100%;
+  padding: 0.625rem 0.875rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #0f172a;
+  background: #f8fafc;
+  outline: none;
+  resize: vertical;
+  min-height: 80px;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  box-sizing: border-box;
+  font-family: inherit;
+}
+
+.textarea:focus {
+  border-color: #0b5ed7;
+  box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.12);
+  background: #fff;
+}
+
+/* ---- Form actions ---- */
+.formActions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 0.75rem;
+  margin-top: 1.375rem;
+  padding-top: 1.125rem;
+  border-top: 1px solid #f1f5f9;
+}
+
+.cancelBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0 1.125rem;
+  height: 38px;
+  background: #f1f5f9;
+  color: #334155;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.cancelBtn:hover { background: #e2e8f0; }
+
+.submitBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 1.375rem;
+  height: 38px;
+  background: #0b5ed7;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.submitBtn:hover:not(:disabled) { background: #0950b9; }
+.submitBtn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+/* ---- Animal records ---- */
+.recordCard {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  padding: 1rem 1.25rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.recordInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+  min-width: 0;
+}
+
+.recordCode {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0f172a;
+  font-family: monospace;
+}
+
+.recordMeta {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+/* ---- Status badge ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.badgeApproved  { background: #dcfce7; color: #16a34a; }
+.badgeHeld      { background: #fef3c7; color: #d97706; }
+.badgeRejected  { background: #fef2f2; color: #dc2626; }
+.badgePending   { background: #f1f5f9; color: #64748b; }
+
+/* ---- Inspect button ---- */
+.inspectBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 0.875rem;
+  height: 34px;
+  background: #eff6ff;
+  color: #0b5ed7;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.inspectBtn:hover { background: #dbeafe; }
+
+/* ---- Session card ---- */
+.sessionCard {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  padding: 1rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.sessionCode {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0f172a;
+  font-family: monospace;
+}
+
+.sessionMeta {
+  font-size: 0.8125rem;
+  color: #64748b;
+}

@@ -1,0 +1,36 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/somlits_dev_identity_db
+    username: somlits_dev
+    password: localdev_only
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          # Use jwk-set-uri (lazy) instead of issuer-uri so the service starts without Keycloak running
+          issuer-uri: ~
+          jwk-set-uri: http://localhost:8180/realms/somlits/protocol/openid-connect/certs
+
+somlits:
+  keycloak:
+    server-url: http://localhost:8180
+    realm: somlits
+    admin:
+      username: admin
+      password: localdev_only
+  servicebus:
+    connection-string: "Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=localdev_only;UseDevelopmentEmulator=true;"
+    topic: somlits.identity
+
+# Disable Azure Key Vault in local mode
+spring.cloud.azure.keyvault.secret.enabled: false
+
+logging:
+  level:
+    com.somlits: DEBUG
+    org.springframework.security: DEBUG

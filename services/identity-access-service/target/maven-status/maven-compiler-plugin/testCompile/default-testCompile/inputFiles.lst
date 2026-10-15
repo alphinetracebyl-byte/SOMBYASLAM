@@ -1,0 +1,9 @@
+D:\SOMLITS\services\identity-access-service\src\test\java\com\somlits\identityaccess\api\AuthApiTest.java
+D:\SOMLITS\services\identity-access-service\src\test\java\com\somlits\identityaccess\domain\model\DelegateGrantTest.java
+D:\SOMLITS\services\identity-access-service\src\test\java\com\somlits\identityaccess\domain\model\InvitationTest.java
+D:\SOMLITS\services\identity-access-service\src\test\java\com\somlits\identityaccess\domain\model\UserAccountTest.java
+D:\SOMLITS\services\identity-access-service\src\test\java\com\somlits\identityaccess\IdentityAccessApplicationTest.java
+D:\SOMLITS\services\identity-access-service\src\test\java\com\somlits\identityaccess\integration\DelegationIntegrationTest.java
+D:\SOMLITS\services\identity-access-service\src\test\java\com\somlits\identityaccess\integration\InvitationIntegrationTest.java
+D:\SOMLITS\services\identity-access-service\src\test\java\com\somlits\identityaccess\integration\UserRegistrationIntegrationTest.java
+D:\SOMLITS\services\identity-access-service\src\test\java\com\somlits\identityaccess\TestcontainersConfig.java

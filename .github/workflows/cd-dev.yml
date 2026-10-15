@@ -1,0 +1,123 @@
+name: CD — Dev and Test
+
+on:
+  workflow_run:
+    workflows: ["CI — Backend Services", "CI — Frontend Platforms"]
+    branches: [main]
+    types: [completed]
+
+permissions:
+  id-token: write   # OIDC federated identity for Azure login
+  contents: read
+
+env:
+  AZURE_CLIENT_ID: ${{ vars.AZURE_CLIENT_ID_DEV }}
+  AZURE_TENANT_ID: ${{ vars.AZURE_TENANT_ID }}
+  AZURE_SUBSCRIPTION_ID: ${{ vars.AZURE_SUBSCRIPTION_ID_DEV }}
+  REGISTRY: ghcr.io
+  IMAGE_ORG: molfrsom
+
+jobs:
+  deploy-dev:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+    environment: development
+    concurrency:
+      group: deploy-dev
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login (OIDC — no stored secrets)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ env.AZURE_CLIENT_ID }}
+          tenant-id: ${{ env.AZURE_TENANT_ID }}
+          subscription-id: ${{ env.AZURE_SUBSCRIPTION_ID }}
+
+      - name: Deploy infrastructure (Bicep — dev)
+        run: |
+          az deployment group create \
+            --resource-group somlits-dev-rg \
+            --template-file infra/bicep/main.bicep \
+            --parameters infra/bicep/parameters/dev.bicepparam \
+            --mode Incremental
+
+      - name: Update Container App revisions (changed services)
+        run: |
+          SHA=${{ github.event.workflow_run.head_sha }}
+          SERVICES=$(cat .github/changed-services.txt 2>/dev/null || echo "")
+          for SERVICE in $SERVICES; do
+            az containerapp update \
+              --name somlits-dev-${SERVICE} \
+              --resource-group somlits-dev-rg \
+              --image ${{ env.REGISTRY }}/${{ env.IMAGE_ORG }}/somlits/${SERVICE}:${SHA}
+          done
+
+      - name: Deploy frontend platforms (Static Web Apps)
+        run: |
+          for PLATFORM in farmer field ministry; do
+            az staticwebapp deploy \
+              --name somlits-dev-${PLATFORM} \
+              --resource-group somlits-dev-rg \
+              --source platforms/${PLATFORM}/dist \
+              --token ${{ secrets.AZURE_STATIC_WEB_APPS_API_TOKEN_DEV }}
+          done
+
+      - name: Run smoke tests (dev)
+        run: |
+          BASE=https://api-dev.somlits.gov.so
+          curl --fail --silent "${BASE}/v1/actuator/health" | jq '.status' | grep -q '"UP"'
+          echo "Smoke test passed — dev"
+
+  deploy-test:
+    needs: deploy-dev
+    runs-on: ubuntu-latest
+    environment: test
+    concurrency:
+      group: deploy-test
+      cancel-in-progress: false
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Azure login (OIDC)
+        uses: azure/login@v2
+        with:
+          client-id: ${{ vars.AZURE_CLIENT_ID_TEST }}
+          tenant-id: ${{ vars.AZURE_TENANT_ID }}
+          subscription-id: ${{ vars.AZURE_SUBSCRIPTION_ID_TEST }}
+
+      - name: Deploy infrastructure (Bicep — test)
+        run: |
+          az deployment group create \
+            --resource-group somlits-test-rg \
+            --template-file infra/bicep/main.bicep \
+            --parameters infra/bicep/parameters/test.bicepparam \
+            --mode Incremental
+
+      - name: Update Container Apps (test)
+        run: |
+          SHA=${{ github.event.workflow_run.head_sha }}
+          SERVICES=$(cat .github/changed-services.txt 2>/dev/null || echo "")
+          for SERVICE in $SERVICES; do
+            az containerapp update \
+              --name somlits-test-${SERVICE} \
+              --resource-group somlits-test-rg \
+              --image ${{ env.REGISTRY }}/${{ env.IMAGE_ORG }}/somlits/${SERVICE}:${SHA}
+          done
+
+      - name: Run integration test suite (Newman)
+        run: |
+          npm install -g newman
+          newman run infra/postman/somlits-integration.postman_collection.json \
+            --environment infra/postman/test.postman_environment.json \
+            --reporters cli,junit \
+            --reporter-junit-export newman-results.xml
+
+      - name: Upload test results
+        uses: actions/upload-artifact@v4
+        with:
+          name: integration-test-results
+          path: newman-results.xml

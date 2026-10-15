@@ -1,0 +1,2 @@
+import{s as l}from"./supabase-CLNi9g8Y.js";async function i(e){try{await l.from("activity_log").insert({portal:"FARMER",category:e.category,level:e.level,title:e.title,detail:e.detail??null,actor_name:e.actorName??null,actor_role:e.actorRole??"Farmer",region:e.region??null,district:e.district??null,reference_code:e.referenceCode??null,user_id:e.userId??null,farmer_id:e.farmerId??null})}catch{}}export{i as l};
+//# sourceMappingURL=activity-KoFRd7eq.js.map

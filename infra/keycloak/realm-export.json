@@ -1,0 +1,312 @@
+{
+  "realm": "somlits",
+  "displayName": "SOMLITS",
+  "displayNameHtml": "<strong>SOMLITS</strong>",
+  "enabled": true,
+  "sslRequired": "external",
+  "registrationAllowed": false,
+  "loginWithEmailAllowed": true,
+  "duplicateEmailsAllowed": false,
+  "resetPasswordAllowed": true,
+  "editUsernameAllowed": false,
+  "bruteForceProtected": true,
+  "accessTokenLifespan": 3600,
+  "refreshTokenMaxReuse": 0,
+  "ssoSessionIdleTimeout": 1800,
+  "ssoSessionMaxLifespan": 36000,
+  "roles": {
+    "realm": [
+      { "name": "FARMER",               "description": "Livestock farmer — owns and registers animals" },
+      { "name": "FIELD_INSPECTOR",      "description": "Field officer performing registrations and inspections" },
+      { "name": "VETERINARY_OFFICER",   "description": "Veterinary officer performing health assessments" },
+      { "name": "SLAUGHTERHOUSE_OFFICER","description": "Slaughterhouse officer managing slaughter sessions" },
+      { "name": "QUARANTINE_OFFICER",   "description": "Quarantine officer managing export consignments" },
+      { "name": "CHECKPOINT_OFFICER",   "description": "Checkpoint officer recording animal movements" },
+      { "name": "MARKET_OFFICER",       "description": "Market officer managing market sessions and sales" },
+      { "name": "MINISTRY_OFFICER",     "description": "Ministry of Livestock officer with oversight access" },
+      { "name": "NATIONAL_ADMIN",       "description": "National administrator with full system access" },
+      { "name": "SYSTEM",               "description": "Internal service-to-service role" }
+    ]
+  },
+  "clients": [
+    {
+      "clientId": "somlits-farmer",
+      "name": "SOMLITS Farmer Portal",
+      "description": "Farmer-facing web application",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:5173/*",
+        "http://localhost:3000/*"
+      ],
+      "webOrigins": [
+        "http://localhost:5173",
+        "http://localhost:3000"
+      ],
+      "protocol": "openid-connect",
+      "attributes": {
+        "access.token.lifespan": "3600",
+        "post.logout.redirect.uris": "http://localhost:5173/*"
+      },
+      "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+    },
+    {
+      "clientId": "somlits-field",
+      "name": "SOMLITS Field Portal",
+      "description": "Field officer web application",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:5174/*",
+        "http://localhost:3001/*"
+      ],
+      "webOrigins": [
+        "http://localhost:5174",
+        "http://localhost:3001"
+      ],
+      "protocol": "openid-connect",
+      "attributes": {
+        "access.token.lifespan": "3600",
+        "post.logout.redirect.uris": "http://localhost:5174/*"
+      },
+      "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+    },
+    {
+      "clientId": "somlits-ministry",
+      "name": "SOMLITS Ministry Portal",
+      "description": "Ministry officer web application",
+      "enabled": true,
+      "publicClient": true,
+      "standardFlowEnabled": true,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": true,
+      "serviceAccountsEnabled": false,
+      "redirectUris": [
+        "http://localhost:5175/*",
+        "http://localhost:3002/*"
+      ],
+      "webOrigins": [
+        "http://localhost:5175",
+        "http://localhost:3002"
+      ],
+      "protocol": "openid-connect",
+      "attributes": {
+        "access.token.lifespan": "3600",
+        "post.logout.redirect.uris": "http://localhost:5175/*"
+      },
+      "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+    },
+    {
+      "clientId": "somlits-services",
+      "name": "SOMLITS Backend Services",
+      "description": "Service-to-service client for internal API calls",
+      "enabled": true,
+      "publicClient": false,
+      "standardFlowEnabled": false,
+      "implicitFlowEnabled": false,
+      "directAccessGrantsEnabled": false,
+      "serviceAccountsEnabled": true,
+      "protocol": "openid-connect",
+      "secret": "somlits-services-secret",
+      "attributes": {
+        "access.token.lifespan": "3600"
+      },
+      "defaultClientScopes": ["web-origins", "acr", "profile", "roles", "email"],
+      "optionalClientScopes": ["address", "phone", "offline_access", "microprofile-jwt"]
+    }
+  ],
+  "clientScopes": [
+    {
+      "name": "roles",
+      "protocol": "openid-connect",
+      "attributes": {
+        "include.in.token.scope": "false",
+        "display.on.consent.screen": "false"
+      },
+      "protocolMappers": [
+        {
+          "name": "realm roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-realm-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "user.attribute": "foo",
+            "access.token.claim": "true",
+            "claim.name": "realm_access.roles",
+            "jsonType.label": "String"
+          }
+        },
+        {
+          "name": "client roles",
+          "protocol": "openid-connect",
+          "protocolMapper": "oidc-usermodel-client-role-mapper",
+          "consentRequired": false,
+          "config": {
+            "multivalued": "true",
+            "user.attribute": "foo",
+            "access.token.claim": "true",
+            "claim.name": "resource_access.${client_id}.roles",
+            "jsonType.label": "String"
+          }
+        }
+      ]
+    }
+  ],
+  "users": [
+    {
+      "username": "farmer-test",
+      "email": "farmer@test.somlits.so",
+      "firstName": "Test",
+      "lastName": "Farmer",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Test1234!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["FARMER"],
+      "attributes": {
+        "territory_type": ["DISTRICT"],
+        "region_code": ["Bay"],
+        "district_code": ["Baidoa"]
+      }
+    },
+    {
+      "username": "field-test",
+      "email": "field@test.somlits.so",
+      "firstName": "Abdi Noor",
+      "lastName": "Ibrahim",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Test1234!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["FIELD_INSPECTOR"],
+      "attributes": {
+        "territory_type": ["DISTRICT"],
+        "region_code": ["Bay"],
+        "district_code": ["Baidoa"]
+      }
+    },
+    {
+      "username": "vet-test",
+      "email": "vet@test.somlits.so",
+      "firstName": "Test",
+      "lastName": "VetOfficer",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Test1234!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["VETERINARY_OFFICER"],
+      "attributes": {
+        "territory_type": ["REGION"],
+        "region_code": ["Bay"]
+      }
+    },
+    {
+      "username": "ministry-test",
+      "email": "ahmed.hassan@test.somlits.so",
+      "firstName": "Ahmed Omar",
+      "lastName": "Hassan",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Test1234!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["MINISTRY_OFFICER"],
+      "attributes": {
+        "territory_type": ["NATIONAL"]
+      }
+    },
+    {
+      "username": "admin",
+      "email": "admin@test.somlits.so",
+      "firstName": "System",
+      "lastName": "Admin",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Admin1234!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["NATIONAL_ADMIN", "MINISTRY_OFFICER"]
+    },
+    {
+      "username": "slaughter-test",
+      "email": "slaughter@test.somlits.so",
+      "firstName": "Test",
+      "lastName": "SlaughterOfficer",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Test1234!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["SLAUGHTERHOUSE_OFFICER"]
+    },
+    {
+      "username": "quarantine-test",
+      "email": "quarantine@test.somlits.so",
+      "firstName": "Test",
+      "lastName": "QuarantineOfficer",
+      "enabled": true,
+      "emailVerified": true,
+      "credentials": [
+        {
+          "type": "password",
+          "value": "Test1234!",
+          "temporary": false
+        }
+      ],
+      "realmRoles": ["QUARANTINE_OFFICER"]
+    }
+  ],
+  "eventsEnabled": false,
+  "adminEventsEnabled": false,
+  "internationalizationEnabled": false,
+  "defaultLocale": "en",
+  "browserSecurityHeaders": {
+    "contentSecurityPolicyReportOnly": "",
+    "xContentTypeOptions": "nosniff",
+    "xRobotsTag": "none",
+    "xFrameOptions": "SAMEORIGIN",
+    "contentSecurityPolicy": "frame-src 'self'; frame-ancestors 'self'; object-src 'none';",
+    "xXSSProtection": "1; mode=block",
+    "strictTransportSecurity": "max-age=31536000; includeSubDomains"
+  },
+  "passwordPolicy": "length(8) and specialChars(1) and upperCase(1) and digits(1)"
+}

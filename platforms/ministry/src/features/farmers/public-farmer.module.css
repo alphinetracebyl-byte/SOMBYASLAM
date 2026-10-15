@@ -1,0 +1,78 @@
+/* Public farmer page — no nav, works on mobile */
+.root {
+  min-height: 100vh;
+  background: #f1f5f9;
+  display: flex; align-items: center; justify-content: center;
+  padding: 1.5rem 1rem;
+  font-family: system-ui, -apple-system, sans-serif;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  padding: 2rem 1.75rem 1.5rem;
+  width: 100%; max-width: 360px;
+  display: flex; flex-direction: column; align-items: center;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.07);
+}
+
+/* Header */
+.header { text-align: center; margin-bottom: 1.5rem; }
+.headerLogo { font-size: 1rem; font-weight: 900; color: #0f172a; letter-spacing: 0.12em; }
+.headerSub  { font-size: 0.6875rem; color: #94a3b8; margin-top: 2px; line-height: 1.4; }
+
+/* Avatar */
+.avatarWrap { position: relative; margin-bottom: 0.875rem; }
+.avatar       { width: 88px; height: 88px; border-radius: 50%; object-fit: cover; display: block; box-shadow: 0 0 0 3px #fff, 0 0 0 4px #e2e8f0; }
+.avatarFallback {
+  width: 88px; height: 88px; border-radius: 50%;
+  background: #1e3a5f; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.875rem; font-weight: 900;
+  box-shadow: 0 0 0 3px #fff, 0 0 0 4px #e2e8f0;
+}
+.statusDot { position: absolute; bottom: 5px; right: 5px; width: 14px; height: 14px; border-radius: 50%; border: 2px solid #fff; }
+.dot_APPROVED  { background: #22c55e; }
+.dot_PENDING   { background: #f59e0b; }
+.dot_SUSPENDED { background: #94a3b8; }
+.dot_REJECTED  { background: #ef4444; }
+
+/* Name */
+.name { font-size: 1.125rem; font-weight: 800; color: #0f172a; text-align: center; margin-bottom: 0.375rem; }
+
+/* Status badge */
+.statusBadge { font-size: 0.6875rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 1.25rem; }
+.badge_APPROVED  { background: #dcfce7; color: #166534; }
+.badge_PENDING   { background: #fef3c7; color: #92400e; }
+.badge_SUSPENDED { background: #f1f5f9; color: #475569; }
+.badge_REJECTED  { background: #fee2e2; color: #991b1b; }
+
+/* Client ID — permanent identifier, front and centre */
+.clientIdWrap {
+  width: 100%; background: #f8fafc; border: 1px solid #e2e8f0;
+  border-radius: 12px; padding: 0.875rem 1.25rem;
+  text-align: center; margin-bottom: 1.25rem;
+}
+.clientIdLabel { font-size: 0.6375rem; font-weight: 700; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.09em; margin-bottom: 0.3rem; }
+.clientId { font-size: 1.375rem; font-weight: 900; color: #0f172a; font-family: monospace; letter-spacing: 0.05em; }
+
+/* Details */
+.details { width: 100%; display: flex; flex-direction: column; gap: 0; margin-bottom: 1.25rem; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; }
+.detailRow { display: flex; justify-content: space-between; align-items: center; padding: 0.5rem 0; border-bottom: 1px solid #f8fafc; }
+.detailRow:last-child { border-bottom: none; }
+.detailLabel { font-size: 0.75rem; font-weight: 600; color: #94a3b8; }
+.detailValue { font-size: 0.8125rem; font-weight: 500; color: #0f172a; text-align: right; }
+
+/* QR */
+.qrWrap { display: flex; flex-direction: column; align-items: center; gap: 0.375rem; margin-bottom: 1.25rem; }
+.qrLabel { font-size: 0.6875rem; color: #94a3b8; }
+
+/* Footer */
+.footer { font-size: 0.6375rem; color: #cbd5e1; text-align: center; line-height: 1.5; }
+
+/* States */
+.loadMsg  { font-size: 0.875rem; color: #94a3b8; padding: 2rem 0; }
+.errorMsg { text-align: center; padding: 1.5rem 0; }
+.errorTitle { font-size: 1rem; font-weight: 700; color: #0f172a; margin-bottom: 0.5rem; }
+.errorMsg p { font-size: 0.875rem; color: #64748b; }

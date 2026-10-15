@@ -1,0 +1,25 @@
+spring:
+  jpa:
+    properties:
+      hibernate:
+        show_sql: false
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:${wiremock.server.port}/realms/somlits/protocol/openid-connect/certs
+
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          enabled: false
+
+somlits:
+  outbox:
+    relay:
+      poll-interval-ms: 99999999
+  photo:
+    storage:
+      base-url: http://localhost:9999/test-photos

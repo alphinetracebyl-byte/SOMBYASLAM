@@ -1,0 +1,36 @@
+# Copy this file to application-local.yml (git-ignored) for local development.
+# These credentials are for local Docker containers ONLY — not production.
+
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/somlits_dev_identity_db
+    username: somlits_dev
+    password: localdev_only
+    hikari:
+      maximum-pool-size: 5
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/somlits
+
+  cloud:
+    azure:
+      servicebus:
+        connection-string: "Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=SAS_KEY;UseDevelopmentEmulator=true"
+
+logging:
+  level:
+    com.somlits: DEBUG
+    org.springframework.security: DEBUG
+
+springdoc:
+  swagger-ui:
+    enabled: true
+
+somlits:
+  africas-talking:
+    api-key: sandbox-key
+    username: sandbox
+    base-url: https://api.sandbox.africastalking.com

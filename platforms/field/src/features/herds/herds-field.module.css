@@ -1,0 +1,32 @@
+.leftPanel  { display: flex; flex-direction: column; gap: 0.75rem; }
+.kpiRow     { display: flex; gap: 0.5rem; flex-wrap: wrap; }
+.kpiChip    { flex: 1; min-width: 70px; background: #fff; border-radius: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); padding: 0.625rem 0.875rem; display: flex; flex-direction: column; gap: 2px; }
+.kpiNum     { font-size: 1.25rem; font-weight: 700; line-height: 1; color: #0f172a; }
+.kpiLbl     { font-size: 0.6875rem; color: #64748b; font-weight: 500; }
+
+.batchList      { display: flex; flex-direction: column; gap: 0.5rem; max-height: calc(100vh - 300px); overflow-y: auto; }
+.batchCard      { width: 100%; background: #fff; border: 2px solid transparent; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); padding: 0.875rem 1rem; text-align: left; cursor: pointer; display: flex; flex-direction: column; gap: 4px; transition: border-color 0.15s; font-family: inherit; }
+.batchCard:hover { border-color: #bfdbfe; }
+.batchCardActive { border-color: #0b5ed7 !important; }
+.batchCode      { font-size: 0.875rem; font-weight: 700; color: #0b5ed7; font-family: monospace; }
+.batchName      { font-size: 0.8125rem; color: #0f172a; font-weight: 600; }
+.batchMeta      { font-size: 0.75rem; color: #64748b; }
+.statusBadge    { display: inline-flex; align-items: center; gap: 4px; font-size: 0.6875rem; font-weight: 700; padding: 2px 8px; border-radius: 20px; text-transform: uppercase; }
+
+.rightPanel   { min-width: 0; display: flex; flex-direction: column; gap: 1rem; }
+.emptyState   { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1rem; padding: 5rem 2rem; color: #94a3b8; background: #fff; border-radius: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+.batchHeader  { background: #fff; border-radius: 14px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.875rem; }
+.batchTitle   { font-size: 1.125rem; font-weight: 700; color: #0f172a; font-family: monospace; }
+.batchSubtitle { font-size: 0.9375rem; color: #334155; }
+.detailChips  { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+.detailChip   { font-size: 0.75rem; color: #475569; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; padding: 3px 10px; }
+
+.animalGrid   { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 0.875rem; }
+.animalCard   { background: #fff; border-radius: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); padding: 1rem 0.875rem; display: flex; flex-direction: column; align-items: center; gap: 0.375rem; }
+.animalSeq    { font-size: 0.875rem; font-weight: 700; color: #0b5ed7; font-family: monospace; }
+.animalMeta   { font-size: 0.75rem; color: #64748b; text-align: center; }
+.animalIdText { font-size: 0.75rem; font-weight: 700; color: #0b5ed7; font-family: monospace; text-align: center; }
+.tagSerial    { font-size: 0.6875rem; color: #94a3b8; font-family: monospace; text-align: center; }
+.sexBadge     { display: inline-flex; align-items: center; padding: 1px 8px; border-radius: 20px; font-size: 0.6875rem; font-weight: 700; }
+.sexM         { background: #eff6ff; color: #1d4ed8; }
+.sexF         { background: #fdf2f8; color: #9d174d; }

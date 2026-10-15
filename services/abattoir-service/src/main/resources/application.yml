@@ -1,0 +1,41 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: abattoir-service
+  datasource:
+    url: jdbc:postgresql://localhost:5442/somlits_dev_abattoir_db
+    username: somlits_dev
+    password: ${DB_PASSWORD:localdev_only}
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
+        jdbc:
+          time_zone: UTC
+  flyway:
+    enabled: true
+    validate-on-migrate: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8180/realms/somlits
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    health:
+      show-details: when-authorized
+
+springdoc:
+  api-docs:
+    path: /internal/v1/api-docs
+  swagger-ui:
+    path: /internal/v1/swagger-ui.html

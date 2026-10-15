@@ -1,0 +1,1024 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>SOMLITS — Developer Reference Flowchart</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: #f1f5f9;
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  padding: 40px 24px 80px;
+  min-width: 980px;
+  color: #0d1f2d;
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+/* ── Page header ── */
+.page-header { max-width: 1020px; margin: 0 auto 28px; text-align: center; }
+.page-header h1 { font-size: 30px; font-weight: 800; color: #0d1f2d; letter-spacing: -0.03em; }
+.page-header .subtitle { font-size: 12.5px; color: #475569; margin-top: 6px; }
+.page-header .tags { display: flex; gap: 8px; justify-content: center; margin-top: 12px; flex-wrap: wrap; }
+.htag { display: inline-block; border-radius: 99px; padding: 3px 12px; font-size: 10px; font-weight: 700; letter-spacing: 0.06em; }
+
+/* ── Legend ── */
+.legend { max-width: 1020px; margin: 0 auto 28px; background: #fff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 16px 20px; }
+.legend-title { font-size: 9px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: #94a3b8; margin-bottom: 12px; }
+.legend-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.legend-group h5 { font-size: 10px; font-weight: 700; color: #64748b; margin-bottom: 6px; letter-spacing: 0.04em; text-transform: uppercase; }
+.legend-item { display: flex; align-items: center; gap: 7px; margin-bottom: 5px; font-size: 11px; color: #334155; }
+.lsq { width: 14px; height: 14px; border-radius: 3px; flex-shrink: 0; }
+
+/* ── Badges ── */
+.badge { display: inline-block; border-radius: 5px; padding: 2px 8px; font-size: 9px; font-weight: 800; letter-spacing: 0.04em; white-space: nowrap; color: #fff; }
+.b-farmer  { background: #16a34a; }
+.b-ministry{ background: #1d4ed8; }
+.b-field   { background: #7c3aed; }
+.b-qsup    { background: #c2410c; }
+.b-vet     { background: #b45309; }
+.b-halal   { background: #0d9488; }
+.b-slsup   { background: #b91c1c; }
+.b-meat    { background: #7f1d1d; }
+.b-system  { background: #475569; }
+.b-p5001   { background: #0d9488; }
+.b-p3001   { background: #1d4ed8; }
+.b-p3002   { background: #7c3aed; }
+.b-p5003   { background: #ea580c; }
+
+/* ── Status pills ── */
+.sp { display: inline-block; border-radius: 5px; padding: 2px 7px; font-size: 9.5px; font-weight: 700; font-family: monospace; border: 1px solid; }
+.sp-gray   { background:#f1f5f9; border-color:#cbd5e1; color:#475569; }
+.sp-blue   { background:#dbeafe; border-color:#93c5fd; color:#1d4ed8; }
+.sp-green  { background:#d1fae5; border-color:#6ee7b7; color:#065f46; }
+.sp-red    { background:#fee2e2; border-color:#fca5a5; color:#991b1b; }
+.sp-amber  { background:#fef3c7; border-color:#fbbf24; color:#92400e; }
+.sp-teal   { background:#ccfbf1; border-color:#5eead4; color:#0f766e; }
+.sp-orange { background:#ffedd5; border-color:#fed7aa; color:#9a3412; }
+.sp-purple { background:#f3e8ff; border-color:#d8b4fe; color:#6d28d9; }
+
+/* ── Flow wrapper ── */
+.flow { max-width: 1020px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; }
+
+/* ── Module ── */
+.mod { width: 100%; margin-top: 28px; }
+.mod-header { border-radius: 10px 10px 0 0; padding: 11px 20px 12px; display: flex; align-items: center; gap: 14px; }
+.mod-num  { font-size: 9px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(255,255,255,0.6); }
+.mod-name { font-size: 15px; font-weight: 800; color: #fff; }
+.mod-actors { margin-left: auto; display: flex; gap: 5px; }
+
+/* ── Step card ── */
+.step-card { background: #fff; border: 1px solid #e2e8f0; border-top: none; padding: 16px 20px; }
+.step-card + .step-card { border-top: 1px dashed #e2e8f0; }
+.step-card.sc-last { border-radius: 0 0 10px 10px; }
+
+.sc-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+.sc-left { display: flex; align-items: flex-start; gap: 12px; }
+.sc-num { font-size: 28px; font-weight: 900; color: #e2e8f0; line-height: 1; flex-shrink: 0; width: 44px; }
+.sc-title { font-size: 15px; font-weight: 700; color: #0d1f2d; line-height: 1.25; margin-bottom: 3px; }
+.sc-sub { font-size: 11px; color: #64748b; }
+.sc-badges { display: flex; gap: 5px; flex-wrap: wrap; justify-content: flex-end; flex-shrink: 0; }
+
+.sc-body { display: grid; grid-template-columns: 1fr 230px; gap: 12px 20px; }
+.sc-desc { font-size: 12px; color: #334155; line-height: 1.65; }
+.sc-desc ul { list-style: none; padding: 0; margin: 6px 0 0; display: flex; flex-direction: column; gap: 2px; }
+.sc-desc ul li { padding-left: 16px; position: relative; }
+.sc-desc ul li::before { content: '→'; position: absolute; left: 0; color: #0d9488; font-weight: 700; font-size: 10px; top: 2px; }
+.sc-desc b { color: #0d1f2d; font-weight: 700; }
+
+.sc-meta { display: flex; flex-direction: column; gap: 6px; }
+.meta-box { background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 7px; padding: 8px 10px; }
+.meta-label { font-size: 8.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #94a3b8; margin-bottom: 4px; }
+.meta-content { font-size: 11px; color: #475569; line-height: 1.55; }
+.meta-content.mono { font-family: 'Cascadia Code', 'Courier New', monospace; font-size: 10.5px; color: #0d9488; }
+
+.rules-bar { background: #f0f9ff; border-left: 3px solid #38bdf8; border-radius: 0 5px 5px 0; padding: 6px 10px; margin-top: 6px; }
+.rl { font-size: 8.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; color: #0284c7; margin-bottom: 3px; }
+.rules-bar ul { list-style: none; padding: 0; margin: 0; }
+.rules-bar ul li { font-size: 10.5px; color: #0369a1; padding-left: 12px; position: relative; line-height: 1.5; }
+.rules-bar ul li::before { content: '⚑'; position: absolute; left: 0; font-size: 8px; top: 2px; }
+
+/* ── Connector ── */
+.conn-wrap { display: flex; justify-content: center; width: 100%; margin: 0; }
+.conn { width: 2px; background: #cbd5e1; height: 22px; position: relative; }
+.conn::after { content:''; position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); border-left:5px solid transparent; border-right:5px solid transparent; border-top:7px solid #cbd5e1; }
+
+/* ── Decision ── */
+.decision { width: 100%; background: #fffbeb; border: 2px solid #f59e0b; border-radius: 12px; padding: 16px 20px; margin: 4px 0; }
+.dec-hdr { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; }
+.dec-icon { width: 34px; height: 34px; background: #f59e0b; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; }
+.dec-title { font-size: 14px; font-weight: 800; color: #92400e; line-height: 1.2; }
+.dec-sub   { font-size: 11px; color: #b45309; margin-top: 2px; }
+.outcomes  { display: grid; grid-template-columns: repeat(auto-fit, minmax(175px, 1fr)); gap: 8px; }
+.oc { border-radius: 8px; padding: 10px 12px; border-width: 1px; border-style: solid; }
+.oc-label { font-size: 8.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 3px; }
+.oc-title { font-size: 12px; font-weight: 700; margin-bottom: 4px; line-height: 1.2; }
+.oc-body  { font-size: 10.5px; line-height: 1.45; }
+.oc.green { background:#f0fdf4; border-color:#86efac; } .oc.green .oc-label{color:#15803d;} .oc.green .oc-title{color:#166534;} .oc.green .oc-body{color:#166534;}
+.oc.blue  { background:#eff6ff; border-color:#93c5fd; } .oc.blue  .oc-label{color:#1d4ed8;} .oc.blue  .oc-title{color:#1e3a8a;} .oc.blue  .oc-body{color:#1e40af;}
+.oc.amber { background:#fffbeb; border-color:#fcd34d; } .oc.amber .oc-label{color:#d97706;} .oc.amber .oc-title{color:#92400e;} .oc.amber .oc-body{color:#b45309;}
+.oc.red   { background:#fef2f2; border-color:#fca5a5; } .oc.red   .oc-label{color:#dc2626;} .oc.red   .oc-title{color:#991b1b;} .oc.red   .oc-body{color:#b91c1c;}
+.oc.teal  { background:#f0fdfa; border-color:#5eead4; } .oc.teal  .oc-label{color:#0f766e;} .oc.teal  .oc-title{color:#134e4a;} .oc.teal  .oc-body{color:#0f766e;}
+
+/* ── Branch two-col ── */
+.branch-row { width: 100%; display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 8px 0; }
+.branch-col { display: flex; flex-direction: column; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+.bch { padding: 10px 15px; display: flex; flex-direction: column; gap: 2px; }
+.bch-label { font-size: 9px; font-weight: 800; letter-spacing: 0.12em; text-transform: uppercase; color: rgba(255,255,255,0.7); }
+.bch-title { font-size: 13px; font-weight: 800; color: #fff; }
+.bstep { background: #fff; border: 1px solid #e2e8f0; border-top: none; padding: 12px 14px 13px; }
+.bstep.blast { border-radius: 0 0 10px 10px; }
+.bs-top { display: flex; align-items: flex-start; justify-content: space-between; gap: 8px; margin-bottom: 5px; }
+.bs-label { font-size: 8.5px; font-weight: 800; letter-spacing: 0.1em; text-transform: uppercase; }
+.bs-badges { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+.bs-title { font-size: 13px; font-weight: 700; color: #0d1f2d; margin-bottom: 3px; line-height: 1.25; }
+.bs-body  { font-size: 11px; color: #475569; line-height: 1.5; }
+.bs-meta  { font-family: monospace; font-size: 9.5px; color: #0d9488; margin-top: 4px; }
+.bs-status{ margin-top: 4px; }
+.bs-rules { background: #f0f9ff; border-left: 2px solid #38bdf8; padding: 5px 8px; margin-top: 6px; font-size: 10px; color: #0369a1; line-height: 1.5; border-radius: 0 4px 4px 0; }
+
+/* slaughter mini-decision inside bstep */
+.sdec { background: #fff7f7; border: 1px solid #fca5a5; border-top: none; padding: 9px 14px; }
+.sdec.slast { border-radius: 0 0 10px 10px; }
+.sdec-title { font-size: 10px; font-weight: 700; color: #991b1b; margin-bottom: 6px; }
+.sdec-row { display: flex; gap: 5px; flex-wrap: wrap; }
+.sdo { border-radius: 5px; padding: 4px 8px; font-size: 10px; font-weight: 700; border: 1px solid; }
+.sdo.g { background:#d1fae5; border-color:#6ee7b7; color:#065f46; }
+.sdo.a { background:#fef3c7; border-color:#fbbf24; color:#92400e; }
+.sdo.r { background:#fee2e2; border-color:#fca5a5; color:#991b1b; }
+
+/* ── Final step ── */
+.final { width: 100%; background: #0d9488; border-radius: 12px; padding: 22px 28px; margin-top: 8px; }
+.final-label { font-size: 9.5px; font-weight: 800; letter-spacing: 0.14em; text-transform: uppercase; color: #99f6e4; margin-bottom: 4px; }
+.final-title { font-size: 21px; font-weight: 800; color: #fff; margin-bottom: 12px; }
+.final-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; }
+.fc { background: rgba(255,255,255,0.12); border-radius: 8px; padding: 11px 14px; }
+.fc h5 { font-size: 9.5px; font-weight: 800; letter-spacing: 0.08em; text-transform: uppercase; color: #5eead4; margin-bottom: 5px; }
+.fc p  { font-size: 11px; color: #ccfbf1; line-height: 1.55; }
+
+/* ── Bottom bar ── */
+.bottom-bar { max-width: 1020px; margin: 28px auto 0; background: #0d1f2d; border-radius: 50px; padding: 15px 36px; text-align: center; color: #fff; font-size: 13px; font-weight: 700; letter-spacing: -0.01em; }
+.bottom-bar span { color: #2dd4bf; }
+
+@media print {
+  body { background: #fff; padding: 16px; min-width: auto; }
+  .mod { page-break-inside: avoid; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ Title ══ -->
+<div class="page-header">
+  <h1>SOMLITS — End-to-End System Flow</h1>
+  <p class="subtitle">Somalia Livestock Identification &amp; Traceability System · Developer Reference · Federal Ministry of Livestock, Forestry &amp; Range</p>
+  <div class="tags">
+    <span class="htag" style="background:#0d1f2d;color:#fff;">Java 21 · Spring Boot</span>
+    <span class="htag" style="background:#0d9488;color:#fff;">React · TypeScript</span>
+    <span class="htag" style="background:#1d4ed8;color:#fff;">PostgreSQL · Supabase</span>
+    <span class="htag" style="background:#7c3aed;color:#fff;">Azure Container Apps</span>
+    <span class="htag" style="background:#b45309;color:#fff;">IGAD LITS · WOAH/OIE 6.5</span>
+  </div>
+</div>
+
+<!-- ══ Legend ══ -->
+<div class="legend">
+  <div class="legend-title">Legend</div>
+  <div class="legend-grid">
+    <div class="legend-group">
+      <h5>Actors</h5>
+      <div class="legend-item"><span class="badge b-farmer">Farmer</span> Animal owner / registrant</div>
+      <div class="legend-item"><span class="badge b-ministry">Ministry Officer</span> Permit reviewer</div>
+      <div class="legend-item"><span class="badge b-field">Field Officer</span> Checkpoint inspector</div>
+      <div class="legend-item"><span class="badge b-qsup">Quarantine Supervisor</span> Lot intake</div>
+      <div class="legend-item"><span class="badge b-vet">Veterinary Officer</span> Clinical inspector</div>
+      <div class="legend-item"><span class="badge b-halal">Halal Supervisor</span> Halal certifier</div>
+      <div class="legend-item"><span class="badge b-slsup">Slaughter Supervisor</span> Abattoir manager</div>
+      <div class="legend-item"><span class="badge b-meat">Meat Inspector</span> Post-mortem vet</div>
+      <div class="legend-item"><span class="badge b-system">System</span> Automated action</div>
+    </div>
+    <div class="legend-group">
+      <h5>Portals</h5>
+      <div class="legend-item"><span class="badge b-p5001">Farmer Portal :5001</span> Self-service</div>
+      <div class="legend-item"><span class="badge b-p3001">Ministry Portal :3001</span> Approvals</div>
+      <div class="legend-item"><span class="badge b-p3002">Field Portal :3002</span> Checkpoint scan</div>
+      <div class="legend-item"><span class="badge b-p5003">Export Portal :5003</span> Quarantine + Slaughter</div>
+    </div>
+    <div class="legend-group">
+      <h5>Card elements</h5>
+      <div class="legend-item"><div class="lsq" style="background:#f0f9ff;border:2px solid #38bdf8;"></div> Business rules</div>
+      <div class="legend-item"><div class="lsq" style="background:#f8fafc;border:1px solid #e2e8f0;"></div> DB tables / status</div>
+      <div class="legend-item"><div class="lsq" style="background:#fffbeb;border:2px solid #f59e0b;"></div> Decision point</div>
+      <div class="legend-item"><div class="lsq" style="background:#fef2f2;border:1px solid #fca5a5;"></div> Rejection / condemnation</div>
+    </div>
+    <div class="legend-group">
+      <h5>Status codes</h5>
+      <div class="legend-item"><span class="sp sp-gray">PENDING_REVIEW</span></div>
+      <div class="legend-item"><span class="sp sp-blue">PERMIT_ISSUED</span></div>
+      <div class="legend-item"><span class="sp sp-orange">IN_TRANSIT</span></div>
+      <div class="legend-item"><span class="sp sp-amber">IN_QUARANTINE</span></div>
+      <div class="legend-item"><span class="sp sp-teal">ANTE_MORTEM_PASSED</span></div>
+      <div class="legend-item"><span class="sp sp-purple">SLAUGHTERED</span></div>
+      <div class="legend-item"><span class="sp sp-green">POST_MORTEM_PASSED</span></div>
+      <div class="legend-item"><span class="sp sp-red">CONDEMNED</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ══ Flow ══ -->
+<div class="flow">
+
+<!-- ──────────────────────────────────────────────── MODULE 0 ── -->
+<div class="mod">
+  <div class="mod-header" style="background:#0d1f2d;">
+    <span class="mod-num">Module 00</span>
+    <span class="mod-name">Farmer Onboarding</span>
+    <div class="mod-actors">
+      <span class="badge b-farmer">Farmer</span>
+      <span class="badge b-ministry">Ministry Officer</span>
+      <span class="badge b-p5001">Farmer Portal :5001</span>
+      <span class="badge b-p3001">Ministry Portal :3001</span>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">01</div>
+        <div>
+          <div class="sc-title">Farmer Account Registration</div>
+          <div class="sc-sub">Farmer self-registers on the Farmer Portal</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-farmer">Farmer</span><span class="badge b-p5001">Farmer Portal :5001</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        Farmer visits the portal and fills in personal details: <b>full name, National ID or Passport number, phone number, region.</b> An OTP is sent to the phone to verify identity. Account is created in <span class="sp sp-gray">PENDING_VERIFICATION</span> state until Ministry activates it.
+        <div class="rules-bar" style="margin-top:8px;">
+          <div class="rl">Business rules</div>
+          <ul>
+            <li>National ID / Passport must be unique across the system</li>
+            <li>Phone number must be a valid Somali number (+252…)</li>
+            <li>Farmer cannot access other features until account is ACTIVE</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">farmers<br>user_registrations</div></div>
+        <div class="meta-box"><div class="meta-label">Status</div><div class="meta-content">→ <span class="sp sp-gray">PENDING_VERIFICATION</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card sc-last">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">02</div>
+        <div>
+          <div class="sc-title">Ministry Activates Farmer Account</div>
+          <div class="sc-sub">Ministry officer reviews registration in Ministry Portal</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-ministry">Ministry Officer</span><span class="badge b-p3001">Ministry Portal :3001</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        Ministry officer reviews pending registrations queue. Verifies National ID against civil registry. Approves or rejects with reason. Farmer receives SMS notification of outcome.
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">farmers<br>user_registrations</div></div>
+        <div class="meta-box"><div class="meta-label">Status transition</div><div class="meta-content"><span class="sp sp-gray">PENDING</span> → <span class="sp sp-green">ACTIVE</span><br><span class="sp sp-gray">PENDING</span> → <span class="sp sp-red">REJECTED</span></div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /mod 0 -->
+
+<div class="conn-wrap"><div class="conn"></div></div>
+
+<!-- ──────────────────────────────────────────────── MODULE 1 ── -->
+<div class="mod">
+  <div class="mod-header" style="background:#b45309;">
+    <span class="mod-num">Module 01</span>
+    <span class="mod-name">Tag Request — RFID / Ear Tag Allocation</span>
+    <div class="mod-actors">
+      <span class="badge b-farmer">Farmer</span>
+      <span class="badge b-ministry">Ministry Officer</span>
+      <span class="badge b-system">System</span>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">03</div>
+        <div>
+          <div class="sc-title">Farmer Submits Tag Request</div>
+          <div class="sc-sub">Farmer requests RFID ear tags from the national pool</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-farmer">Farmer</span><span class="badge b-p5001">Farmer Portal :5001</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        Logged-in farmer submits a tag request specifying: <b>number of tags needed, animal species (cattle / camel / sheep / goat), intended premises.</b> Request goes to Ministry review queue.
+        <div class="rules-bar" style="margin-top:8px;">
+          <div class="rl">Business rules</div>
+          <ul>
+            <li>Farmer must have ACTIVE account</li>
+            <li>Premises must be registered and ACTIVE</li>
+            <li>Quota limits may apply per species per premises</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">tag_requests</div></div>
+        <div class="meta-box"><div class="meta-label">Status</div><div class="meta-content">→ <span class="sp sp-gray">PENDING_REVIEW</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card sc-last">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">04</div>
+        <div>
+          <div class="sc-title">Ministry Reviews &amp; Approves Tag Request</div>
+          <div class="sc-sub">Ministry officer reviews, approves, and RFID serials are allocated</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-ministry">Ministry Officer</span><span class="badge b-p3001">Ministry Portal :3001</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        Ministry officer reviews the request. On approval, the system allocates RFID serial numbers from the national pool. Physical tags are dispatched to the farmer. Farmer confirms receipt in the portal to mark tags as DELIVERED and available for animal registration.
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">tag_requests<br>rfid_tags</div></div>
+        <div class="meta-box"><div class="meta-label">Status flow</div><div class="meta-content"><span class="sp sp-gray">PENDING_REVIEW</span><br>→ <span class="sp sp-blue">APPROVED</span><br>→ <span class="sp sp-orange">DISPATCHED</span><br>→ <span class="sp sp-green">DELIVERED</span></div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /mod 1 -->
+
+<div class="conn-wrap"><div class="conn"></div></div>
+
+<!-- Decision: Tag Request -->
+<div class="decision">
+  <div class="dec-hdr">
+    <div class="dec-icon">◇</div>
+    <div><div class="dec-title">Tag Request Decision</div><div class="dec-sub">Ministry Officer · Ministry Portal :3001</div></div>
+  </div>
+  <div class="outcomes">
+    <div class="oc green">
+      <div class="oc-label">✓ Approved</div>
+      <div class="oc-title">Tags Allocated</div>
+      <div class="oc-body">RFID serial numbers assigned from national pool → Physical tags dispatched → Farmer confirms receipt → Tags available for animal registration</div>
+    </div>
+    <div class="oc red">
+      <div class="oc-label">✗ Rejected</div>
+      <div class="oc-title">Request Rejected</div>
+      <div class="oc-body">Farmer notified with reason → May correct and resubmit → Status: REJECTED</div>
+    </div>
+  </div>
+</div>
+
+<div class="conn-wrap"><div class="conn"></div></div>
+
+<!-- ──────────────────────────────────────────────── MODULE 2 ── -->
+<div class="mod">
+  <div class="mod-header" style="background:#0f766e;">
+    <span class="mod-num">Module 02</span>
+    <span class="mod-name">Premises &amp; Animal Registration</span>
+    <div class="mod-actors">
+      <span class="badge b-farmer">Farmer</span>
+      <span class="badge b-p5001">Farmer Portal :5001</span>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">05</div>
+        <div>
+          <div class="sc-title">Premises Registration</div>
+          <div class="sc-sub">Farmer registers each farm / holding / feedlot</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-farmer">Farmer</span><span class="badge b-p5001">Farmer Portal :5001</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        Farmer registers each premises with: <b>premises name, GPS coordinates (lat/lon), region, district, premises type</b> (farm / feedlot / ranch / holding), area in hectares. Each premises gets an auto-generated code.
+        <div class="rules-bar" style="margin-top:8px;">
+          <div class="rl">Business rules</div>
+          <ul>
+            <li>GPS coordinates required — used for checkpoint and disease-zone mapping</li>
+            <li>Premises code auto-generated: PR-{region}-{seq}</li>
+            <li>An active approved premises is required as origin for any movement</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">farmer_premises</div></div>
+        <div class="meta-box"><div class="meta-label">Status</div><div class="meta-content">→ <span class="sp sp-green">ACTIVE</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card sc-last">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">06</div>
+        <div>
+          <div class="sc-title">Animal Registration</div>
+          <div class="sc-sub">Farmer registers each animal and links RFID tag</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-farmer">Farmer</span><span class="badge b-p5001">Farmer Portal :5001</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        Farmer selects an allocated RFID tag from their received pool and enters: <b>species, breed, sex, birth date / age, birth weight, acquisition type</b> (born on premises / purchased from another farmer), current premises.
+        <div class="rules-bar" style="margin-top:8px;">
+          <div class="rl">Business rules</div>
+          <ul>
+            <li>One active primary tag per animal at all time</li>
+            <li>Tag serial must be unique system-wide and from farmer's allocated pool</li>
+            <li>Animal code auto-generated: ANI-{species_code}-{region}-{seq}</li>
+            <li>Tag replacement does NOT create a new animal — creates tag_history record</li>
+            <li>Purchased animals require source premises / seller details</li>
+            <li>Dead, slaughtered, or exported animals cannot make a live movement</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">animals<br>rfid_tags (link)</div></div>
+        <div class="meta-box"><div class="meta-label">Status</div><div class="meta-content">→ <span class="sp sp-green">ACTIVE</span></div></div>
+        <div class="meta-box"><div class="meta-label">Animal code format</div><div class="meta-content mono">ANI-{SPECIES}-{REGION}-{seq}</div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /mod 2 -->
+
+<div class="conn-wrap"><div class="conn"></div></div>
+
+<!-- ──────────────────────────────────────────────── MODULE 3 ── -->
+<div class="mod">
+  <div class="mod-header" style="background:#1d4ed8;">
+    <span class="mod-num">Module 03</span>
+    <span class="mod-name">Movement Permit — Request · Approval · Dispatch</span>
+    <div class="mod-actors">
+      <span class="badge b-farmer">Farmer</span>
+      <span class="badge b-ministry">Ministry Officer</span>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">07</div>
+        <div>
+          <div class="sc-title">Movement Permit Request — 4-Step Wizard</div>
+          <div class="sc-sub">Farmer requests a permit before moving animals between premises</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-farmer">Farmer</span><span class="badge b-p5001">Farmer Portal :5001</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        <ul>
+          <li><b>Step 1 — Origin &amp; Animals:</b> Select origin premises → system shows only that farmer's animals at that premises → farmer selects which animals are moving</li>
+          <li><b>Step 2 — Destination:</b> Destination premises code or facility, movement purpose (sale / quarantine / slaughter / grazing), estimated arrival date</li>
+          <li><b>Step 3 — Transport:</b> Vehicle registration, driver name &amp; ID, transport company, planned departure date &amp; time</li>
+          <li><b>Step 4 — Review &amp; Submit:</b> Review all details → submit → movement code generated</li>
+        </ul>
+        <div class="rules-bar" style="margin-top:8px;">
+          <div class="rl">Business rules</div>
+          <ul>
+            <li>Origin premises must be ACTIVE and owned by the requesting farmer</li>
+            <li>All selected animals must be ACTIVE, at origin premises, and have no health blocks</li>
+            <li>A completed movement cannot be deleted (immutable audit trail)</li>
+            <li>Movement code auto-generated: MOV-{region}-{seq}</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">farmer_movement_requests<br>farmer_premises<br>animals</div></div>
+        <div class="meta-box"><div class="meta-label">Status</div><div class="meta-content">→ <span class="sp sp-gray">PENDING_REVIEW</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">08</div>
+        <div>
+          <div class="sc-title">Ministry Reviews Movement Permit</div>
+          <div class="sc-sub">Ministry officer reviews in Ministry Portal approval queue</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-ministry">Ministry Officer</span><span class="badge b-p3001">Ministry Portal :3001</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        Ministry officer reviews: animal health status, origin farm disease status, route, destination premises, transport details. May request additional documentation or assign a field officer for pre-movement inspection.
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">farmer_movement_requests<br>movement_permits</div></div>
+        <div class="meta-box"><div class="meta-label">Status</div><div class="meta-content"><span class="sp sp-gray">PENDING_REVIEW</span><br>→ <span class="sp sp-blue">PERMIT_ISSUED</span><br>→ <span class="sp sp-red">REJECTED</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card sc-last">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">09</div>
+        <div>
+          <div class="sc-title">Farmer Dispatches Animals</div>
+          <div class="sc-sub">Farmer confirms actual physical departure from the farm</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-farmer">Farmer</span><span class="badge b-p5001">Farmer Portal :5001</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        After Ministry issues the permit, farmer clicks <b>"Dispatch"</b> on the PremisesDetailPage when animals physically leave the farm. This confirms movement has started and locks the permit.
+        <div class="rules-bar" style="margin-top:8px;">
+          <div class="rl">Business rules</div>
+          <ul>
+            <li>Dispatch is irreversible — once IN_TRANSIT the status cannot be rolled back</li>
+            <li>Actual departure timestamp recorded (may differ from estimated)</li>
+            <li>Only permit holder farmer can dispatch</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">farmer_movement_requests<br>animals (location update)</div></div>
+        <div class="meta-box"><div class="meta-label">Status</div><div class="meta-content"><span class="sp sp-blue">PERMIT_ISSUED</span> → <span class="sp sp-orange">IN_TRANSIT</span></div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /mod 3 -->
+
+<div class="conn-wrap"><div class="conn"></div></div>
+
+<!-- Decision: Permit -->
+<div class="decision">
+  <div class="dec-hdr">
+    <div class="dec-icon">◇</div>
+    <div><div class="dec-title">Movement Permit Decision</div><div class="dec-sub">Ministry Officer · Ministry Portal :3001</div></div>
+  </div>
+  <div class="outcomes">
+    <div class="oc green">
+      <div class="oc-label">✓ Approved</div>
+      <div class="oc-title">Permit Issued</div>
+      <div class="oc-body">Status → PERMIT_ISSUED · Unique movement code generated · Farmer notified · Animals may now be dispatched</div>
+    </div>
+    <div class="oc red">
+      <div class="oc-label">✗ Rejected</div>
+      <div class="oc-title">Permit Rejected</div>
+      <div class="oc-body">Status → REJECTED · Farmer notified with reason · Farmer may correct and resubmit a new request</div>
+    </div>
+  </div>
+</div>
+
+<div class="conn-wrap"><div class="conn"></div></div>
+
+<!-- ──────────────────────────────────────────────── MODULE 4 ── -->
+<div class="mod">
+  <div class="mod-header" style="background:#6d28d9;">
+    <span class="mod-num">Module 04</span>
+    <span class="mod-name">Field Checkpoint — RFID Scan &amp; Identity Verification</span>
+    <div class="mod-actors">
+      <span class="badge b-field">Field Officer</span>
+      <span class="badge b-p3002">Field Portal :3002</span>
+    </div>
+  </div>
+
+  <div class="step-card sc-last">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">10</div>
+        <div>
+          <div class="sc-title">RFID Tag Scan at Road Checkpoint</div>
+          <div class="sc-sub">Field officer scans ear tag — system performs real-time multi-table lookup</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-field">Field Officer</span><span class="badge b-p3002">Field Portal :3002</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        Officer types or scans the RFID / ear tag serial. System performs a sequential Supabase lookup:
+        <ul>
+          <li><b>Step 1 — Animal lookup:</b> <code>animals</code> by <code>ilike('tag_serial', input)</code> — returns animal identity, species, breed, sex, age, weight, status</li>
+          <li><b>Step 2 — Premises + Permit (parallel):</b> <code>farmer_premises</code> by <code>current_premises_id</code> AND <code>farmer_movement_requests</code> filtered to active statuses (APPROVED / PERMIT_ISSUED / IN_TRANSIT / DEPARTURE_CONFIRMED)</li>
+          <li><b>Step 3 — Owner name:</b> <code>farmers</code> by <code>farmer_id</code> from premises record</li>
+          <li><b>Health flags:</b> built from <code>animals.status</code> — any of RESTRICTED / QUARANTINED / SICK / DEAD / SUSPENDED triggers a flag</li>
+        </ul>
+        Result displayed: <b>animal identity · owner name · origin premises · active movement permit · health flags</b>
+        <div class="rules-bar" style="margin-top:8px;">
+          <div class="rl">Business rules</div>
+          <ul>
+            <li>Tag lookup is case-insensitive (ilike) to handle scanner variations</li>
+            <li>No permit found → Flag / Hold regardless of animal status</li>
+            <li>Health restriction flag → Flag / Hold regardless of permit</li>
+            <li>Tag not in system → Possible illegal movement → Escalate to supervisor</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables queried</div><div class="meta-content mono">animals<br>farmer_premises<br>farmers<br>farmer_movement_requests</div></div>
+        <div class="meta-box"><div class="meta-label">Query pattern</div><div class="meta-content mono">ilike('tag_serial', val)<br>parallel: premises + permit<br>then: farmer name</div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /mod 4 -->
+
+<div class="conn-wrap"><div class="conn"></div></div>
+
+<!-- Decision: Checkpoint -->
+<div class="decision">
+  <div class="dec-hdr">
+    <div class="dec-icon">◇</div>
+    <div><div class="dec-title">Checkpoint Decision</div><div class="dec-sub">Field Officer · on-the-spot determination</div></div>
+  </div>
+  <div class="outcomes">
+    <div class="oc green">
+      <div class="oc-label">✓ Clear</div>
+      <div class="oc-title">Clear to Proceed</div>
+      <div class="oc-body">Valid identity + active permit + no health flags → Green screen → Officer waves vehicle through to destination</div>
+    </div>
+    <div class="oc amber">
+      <div class="oc-label">⚠ Flag / Hold</div>
+      <div class="oc-title">Detained for Inspection</div>
+      <div class="oc-body">Missing permit OR health restriction → Red screen → Vehicle detained → Officer records inspection → Supervisor notified</div>
+    </div>
+    <div class="oc red">
+      <div class="oc-label">✗ No Match</div>
+      <div class="oc-title">Tag Not Found</div>
+      <div class="oc-body">Tag serial not in LITS database → Possible illegal movement or unregistered animal → Escalate to supervisor for further action</div>
+    </div>
+  </div>
+</div>
+
+<div class="conn-wrap"><div class="conn"></div></div>
+
+<!-- ──────────────────────────────────────────────── MODULE 5 ── -->
+<div class="mod">
+  <div class="mod-header" style="background:#c2410c;">
+    <span class="mod-num">Module 05</span>
+    <span class="mod-name">Quarantine Station — Lot Intake &amp; Monitoring Period</span>
+    <div class="mod-actors">
+      <span class="badge b-qsup">Quarantine Supervisor</span>
+      <span class="badge b-vet">Veterinary Officer</span>
+      <span class="badge b-p5003">Export Portal :5003</span>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">11</div>
+        <div>
+          <div class="sc-title">Lot Intake — 4-Step Wizard</div>
+          <div class="sc-sub">Quarantine supervisor registers the arriving lot at the station</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-qsup">Quarantine Supervisor</span><span class="badge b-p5003">Export Portal :5003</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        <ul>
+          <li><b>Step 1 — Permit Lookup:</b> Search by movement permit code → system auto-fills origin premises, farmer name, declared animal count</li>
+          <li><b>Step 2 — Lot Details:</b> Destination country, exporter company, declared species and count, movement purpose (export / domestic slaughter)</li>
+          <li><b>Step 3 — Pen Assignment:</b> Assign animals to quarantine pens by species; update pen current_count</li>
+          <li><b>Step 4 — Day-0 Protocols:</b> Record <b>sample collection date</b> (quarantine clock starts here, NOT arrival date), initial health notes, gate-in count</li>
+        </ul>
+        <div class="rules-bar" style="margin-top:8px;">
+          <div class="rl">Business rules (WOAH/OIE Chapter 6.5)</div>
+          <ul>
+            <li>Quarantine clock starts from sample_collection_date — not arrival date</li>
+            <li>Species separation mandatory — cattle, camels, and small ruminants in separate pens</li>
+            <li>All-in / all-out lot principle — all animals in a lot clear together as one unit</li>
+            <li>Required days: Saudi/UAE/Oman/Kuwait/Bahrain = 21 · Egypt = 28 · Qatar = 30</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">quarantine_batches (INSERT)<br>movement_permits (UPDATE)<br>facility_pens (UPDATE count)</div></div>
+        <div class="meta-box"><div class="meta-label">Batch status</div><div class="meta-content">→ <span class="sp sp-amber">IN_QUARANTINE</span></div></div>
+        <div class="meta-box"><div class="meta-label">Permit status</div><div class="meta-content"><span class="sp sp-orange">IN_TRANSIT</span> → <span class="sp sp-amber">IN_QUARANTINE</span></div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">12</div>
+        <div>
+          <div class="sc-title">Daily Inspection Log</div>
+          <div class="sc-sub">Recorded once per lot per day for the full quarantine period — LOOP</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-vet">Veterinary Officer</span><span class="badge b-p5003">Export Portal :5003</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        Each day for the quarantine period, the vet officer records: <b>total animals checked, number showing clinical signs, mortalities since last inspection, feed status, water status, general condition score, notes.</b>
+        <div class="rules-bar" style="margin-top:8px;">
+          <div class="rl">Business rules</div>
+          <ul>
+            <li>One record per batch_id + inspection_date (UPSERT — can correct same-day entry)</li>
+            <li>Mortality counts feed into lot statistics displayed on BatchDetailPage</li>
+          </ul>
+        </div>
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">quarantine_daily_inspections<br>(UPSERT per batch + date)</div></div>
+        <div class="meta-box"><div class="meta-label">Tab</div><div class="meta-content">BatchDetailPage → Daily Log tab</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">13</div>
+        <div>
+          <div class="sc-title">Vaccination Records</div>
+          <div class="sc-sub">Record each vaccination event applied to the lot</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-vet">Veterinary Officer</span><span class="badge b-p5003">Export Portal :5003</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        Record vaccination events for the lot: <b>disease target (RVF / PPR / FMD / Brucellosis / other), vaccine brand, batch number, dose per animal, route of administration, vaccinator name, date.</b>
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">quarantine_vaccinations</div></div>
+        <div class="meta-box"><div class="meta-label">Tab</div><div class="meta-content">BatchDetailPage → Vaccinations tab</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">14</div>
+        <div>
+          <div class="sc-title">Exception Animals — Individual Records</div>
+          <div class="sc-sub">Individual records for sick, dead, or rejected animals within the lot</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-vet">Veterinary Officer</span><span class="badge b-p5003">Export Portal :5003</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        Animals requiring individual attention are recorded by RFID tag: <b>exception type (SICK / DEAD / REJECTED), clinical findings, action taken.</b> Bulk gate-count animals do NOT get individual records — only exceptions.
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">Tables</div><div class="meta-content mono">quarantine_batch_animals<br>(exceptions only)<br>quarantine_rfid_records<br>(bulk RFID gate scans)</div></div>
+        <div class="meta-box"><div class="meta-label">Design rule</div><div class="meta-content">Bulk RFID in rfid_records · Individual records only for exceptions (sick / dead / rejected)</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="step-card sc-last">
+    <div class="sc-top">
+      <div class="sc-left">
+        <div class="sc-num">15</div>
+        <div>
+          <div class="sc-title">Vet Inspections · Lab Samples · Treatments</div>
+          <div class="sc-sub">Additional monitoring captured in BatchDetailPage tabs</div>
+        </div>
+      </div>
+      <div class="sc-badges"><span class="badge b-vet">Veterinary Officer</span><span class="badge b-p5003">Export Portal :5003</span></div>
+    </div>
+    <div class="sc-body">
+      <div class="sc-desc">
+        <ul>
+          <li><b>Vet Inspections tab:</b> Formal health inspection reports during quarantine</li>
+          <li><b>Lab Samples tab:</b> Sample collection records linked to external lab results (brucellosis / FMD titres / PCR)</li>
+          <li><b>Treatments tab:</b> Any treatments administered (antiparasitic, antibiotic) with withdrawal period notes</li>
+        </ul>
+      </div>
+      <div class="sc-meta">
+        <div class="meta-box"><div class="meta-label">BatchDetailPage tabs</div><div class="meta-content">Daily Log · Vaccinations · Exception Animals · Vet Inspections · Lab Samples · Treatments</div></div>
+      </div>
+    </div>
+  </div>
+</div><!-- /mod 5 -->
+
+<div class="conn-wrap"><div class="conn"></div></div>
+
+<!-- Decision: Quarantine Clearance -->
+<div class="decision">
+  <div class="dec-hdr">
+    <div class="dec-icon">◇</div>
+    <div>
+      <div class="dec-title">Quarantine Clearance Decision</div>
+      <div class="dec-sub">Veterinary Officer · Export Portal :5003 · Table: quarantine_clearances</div>
+    </div>
+  </div>
+  <div class="outcomes">
+    <div class="oc blue">
+      <div class="oc-label">→ Path A</div>
+      <div class="oc-title">Cleared for Live Export</div>
+      <div class="oc-body">Animals shipped alive · Export health certificate (AHC) issued · Vessel loading at port · Status: EXPORTED</div>
+    </div>
+    <div class="oc teal">
+      <div class="oc-label">→ Path B</div>
+      <div class="oc-title">Cleared for Slaughter</div>
+      <div class="oc-body">Animals proceed to registered abattoir · Slaughter workflow begins · Full halal process mandatory</div>
+    </div>
+    <div class="oc amber">
+      <div class="oc-label">⚠ Extend</div>
+      <div class="oc-title">Quarantine Extended</div>
+      <div class="oc-body">Pending lab result or health concern · Additional days added · New clearance decision required at end of extension</div>
+    </div>
+    <div class="oc red">
+      <div class="oc-label">✗ Prohibit</div>
+      <div class="oc-title">Condemned / Prohibited</div>
+      <div class="oc-body">Notifiable disease detected · Animals cannot leave quarantine · Disposal protocol activated · Outbreak investigation triggered</div>
+    </div>
+  </div>
+</div>
+
+<div class="conn-wrap"><div class="conn"></div></div>
+
+<!-- ──────────────────────────────────────────────── BRANCH ── -->
+<div class="branch-row">
+
+  <!-- PATH A: LIVE EXPORT -->
+  <div class="branch-col">
+    <div class="bch" style="background:#1e40af;">
+      <div class="bch-label">Path A</div>
+      <div class="bch-title">Live Export</div>
+    </div>
+
+    <div class="bstep">
+      <div class="bs-top">
+        <div><div class="bs-label" style="color:#1d4ed8;">Step 16-A · Export Dispatch</div></div>
+        <div class="bs-badges"><span class="badge b-qsup">Quarantine Supervisor</span><span class="badge b-p5003">Export Portal :5003</span></div>
+      </div>
+      <div class="bs-title">Animals Loaded for Live Export</div>
+      <div class="bs-body">Cleared lot loaded onto transport for port · Export permit issued · Loading manifest completed · Container / vessel details recorded</div>
+      <div class="bs-meta">export_consignments · consignment_items</div>
+      <div class="bs-status"><span class="sp sp-blue">CLEARED</span> → <span class="sp sp-green">EXPORTED</span></div>
+    </div>
+
+    <div class="bstep">
+      <div class="bs-top">
+        <div><div class="bs-label" style="color:#1d4ed8;">Step 17-A · Certificate</div></div>
+        <div class="bs-badges"><span class="badge b-vet">Veterinary Officer</span><span class="badge b-p3001">Ministry Portal :3001</span></div>
+      </div>
+      <div class="bs-title">Animal Health Certificate Issued</div>
+      <div class="bs-body">Bilateral AHC (Animal Health Certificate) issued by Ministry Vet · Meets Gulf / Arab destination country import requirements · Halal declaration included · Certificate code generated</div>
+    </div>
+
+    <div class="bstep blast">
+      <div class="bs-label" style="color:#1d4ed8;">Step 18-A · Lifecycle Closed</div>
+      <div class="bs-title">Animals Exported — LITS Record Closed</div>
+      <div class="bs-body">Lifecycle status: <span class="sp sp-green">EXPORTED</span> · Trace-forward complete: farm → quarantine → vessel · Record is permanent and immutable</div>
+    </div>
+  </div>
+
+  <!-- PATH B: SLAUGHTER -->
+  <div class="branch-col">
+    <div class="bch" style="background:#991b1b;">
+      <div class="bch-label">Path B</div>
+      <div class="bch-title">Slaughter at Registered Abattoir</div>
+    </div>
+
+    <div class="bstep">
+      <div class="bs-top">
+        <div><div class="bs-label" style="color:#b91c1c;">Step 16-B · Receiving</div></div>
+        <div class="bs-badges"><span class="badge b-slsup">Slaughter Supervisor</span><span class="badge b-p5003">Export Portal :5003</span></div>
+      </div>
+      <div class="bs-title">Animal Received at Abattoir</div>
+      <div class="bs-body">RFID tag scanned to link to existing animal record · Holding pen assigned · Live weight measured · SL code auto-generated</div>
+      <div class="bs-meta">slaughter_records (INSERT)</div>
+      <div class="bs-status">→ <span class="sp sp-gray">RECEIVED</span></div>
+      <div class="bs-rules">SL code: SL-{facility_code}-{YYYYMMDD}-{seq}</div>
+    </div>
+
+    <div class="bstep">
+      <div class="bs-top">
+        <div><div class="bs-label" style="color:#b91c1c;">Step 17-B · Ante-Mortem</div></div>
+        <div class="bs-badges"><span class="badge b-vet">Veterinary Officer</span><span class="badge b-p5003">Export Portal :5003</span></div>
+      </div>
+      <div class="bs-title">Ante-Mortem Inspection — Live Animal</div>
+      <div class="bs-body">Government vet assesses live animal: general health, behavior, mobility, body condition score, presence of clinical signs, zoonotic disease indicators</div>
+      <div class="bs-meta">ante_mortem_inspections (INSERT)</div>
+    </div>
+    <div class="sdec">
+      <div class="sdec-title">◇ Ante-Mortem Decision</div>
+      <div class="sdec-row">
+        <div class="sdo g">FIT → ANTE_MORTEM_PASSED</div>
+        <div class="sdo g">CONDITIONALLY FIT → proceed with note</div>
+        <div class="sdo a">DETAINED → re-inspect later</div>
+        <div class="sdo r">UNFIT → Condemned</div>
+        <div class="sdo r">EMERGENCY → immediate slaughter</div>
+      </div>
+    </div>
+
+    <div class="bstep">
+      <div class="bs-top">
+        <div><div class="bs-label" style="color:#b91c1c;">Step 18-B · Halal Verification</div></div>
+        <div class="bs-badges"><span class="badge b-halal">Halal Supervisor</span><span class="badge b-p5003">Export Portal :5003</span></div>
+      </div>
+      <div class="bs-title">Halal Compliance Verification</div>
+      <div class="bs-body">Certified halal supervisor verifies: slaughterer credentials &amp; license · Tasmiyah (Bismillah) recited · Throat-cut method confirmed · Animal orientation to qibla</div>
+      <div class="bs-meta">halal_verifications (INSERT)</div>
+      <div class="bs-rules">Mandatory for ALL animals — Islamic law requirement; Gulf market condition</div>
+    </div>
+    <div class="sdec">
+      <div class="sdec-title">◇ Halal Decision</div>
+      <div class="sdec-row">
+        <div class="sdo g">HALAL → proceed to slaughter event</div>
+        <div class="sdo a">DOUBTFUL → supervisor review required</div>
+        <div class="sdo r">NON-HALAL → rejected for halal export</div>
+      </div>
+    </div>
+
+    <div class="bstep">
+      <div class="bs-top">
+        <div><div class="bs-label" style="color:#b91c1c;">Step 19-B · Slaughter Event</div></div>
+        <div class="bs-badges"><span class="badge b-slsup">Slaughter Supervisor</span><span class="badge b-p5003">Export Portal :5003</span></div>
+      </div>
+      <div class="bs-title">Animal Slaughtered — CARC Code Generated</div>
+      <div class="bs-body">Slaughter time, line number, and operator recorded · Dressed carcass weight measured immediately after dressing · <b>CARC code</b> generated — new traceability ID for the carcass</div>
+      <div class="bs-meta">slaughter_records (UPDATE)</div>
+      <div class="bs-status"><span class="sp sp-teal">ANTE_MORTEM_PASSED</span> → <span class="sp sp-purple">SLAUGHTERED</span></div>
+      <div class="bs-rules">CARC code: CARC-{slaughter_code}</div>
+    </div>
+
+    <div class="bstep">
+      <div class="bs-top">
+        <div><div class="bs-label" style="color:#b91c1c;">Step 20-B · Post-Mortem</div></div>
+        <div class="bs-badges"><span class="badge b-meat">Meat Inspector</span><span class="badge b-p5003">Export Portal :5003</span></div>
+      </div>
+      <div class="bs-title">Post-Mortem Carcass &amp; Organ Inspection</div>
+      <div class="bs-body">Inspector examines: head (brain / lymph nodes) · liver · lungs · heart · kidneys · spleen · carcass surface lymph nodes. Stamps PASSED carcasses with facility brand.</div>
+      <div class="bs-meta">post_mortem_inspections (INSERT)</div>
+    </div>
+    <div class="sdec">
+      <div class="sdec-title">◇ Post-Mortem Decision</div>
+      <div class="sdec-row">
+        <div class="sdo g">PASSED → POST_MORTEM_PASSED</div>
+        <div class="sdo a">CONDITIONALLY PASSED → some organs condemned, carcass cleared</div>
+        <div class="sdo r">CONDEMNED → full carcass condemned, disposal recorded</div>
+      </div>
+    </div>
+
+    <div class="bstep blast">
+      <div class="bs-top">
+        <div><div class="bs-label" style="color:#b91c1c;">Step 21-B · Export Dispatch</div></div>
+        <div class="bs-badges"><span class="badge b-slsup">Slaughter Supervisor</span><span class="badge b-p5003">Export Portal :5003</span></div>
+      </div>
+      <div class="bs-title">Consignment Built &amp; Dispatched</div>
+      <div class="bs-body">Cleared carcasses (POST_MORTEM_PASSED only) selected and grouped into export consignment · Container number and seal recorded · Loading date and destination market · Health certificate generated · CONS code auto-generated</div>
+      <div class="bs-meta">export_consignments (INSERT) · consignment_items (INSERT per carcass)</div>
+      <div class="bs-status"><span class="sp sp-green">POST_MORTEM_PASSED</span> → <span class="sp sp-green">DISPATCHED</span></div>
+      <div class="bs-rules">CONS code: CONS-{facility}-{YYYYMMDD}-{seq} · Only POST_MORTEM_PASSED carcasses may be added</div>
+    </div>
+  </div>
+
+</div><!-- /branch-row -->
+
+<div class="conn-wrap"><div class="conn"></div></div>
+
+<!-- ──────────────────────────────────────────────── FINAL ── -->
+<div class="final">
+  <div class="final-label">Step 22 · National LITS Registry</div>
+  <div class="final-title">Complete Traceability Record — Farm to Fork</div>
+  <div class="final-grid">
+    <div class="fc">
+      <h5>Trace-Back</h5>
+      <p>From any carcass or consignment: → slaughter event → ante-mortem → quarantine lot → movement permit → origin premises → animal birth registration → farmer identity</p>
+    </div>
+    <div class="fc">
+      <h5>Trace-Forward</h5>
+      <p>From any registered animal: → all movements → all health events → quarantine lot → slaughter record → carcass code → export consignment → destination market</p>
+    </div>
+    <div class="fc">
+      <h5>Disease Response</h5>
+      <p>Identify all animals from same premises, same movement, or same quarantine lot within minutes · Outbreak investigation starts from a single RFID scan · Full history permanently immutable</p>
+    </div>
+  </div>
+</div>
+
+</div><!-- /flow -->
+
+<!-- ══ Bottom bar ══ -->
+<div class="bottom-bar">
+  11 modules · 22 steps · <span>4 portals · 20+ database tables · complete audit trail</span> — every animal traceable from birth to fork
+</div>
+
+</body>
+</html>

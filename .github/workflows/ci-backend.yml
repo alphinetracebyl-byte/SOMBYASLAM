@@ -1,0 +1,173 @@
+name: CI — Backend Services
+
+on:
+  pull_request:
+    branches: [main, "release/**"]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write   # CodeQL
+  packages: write          # Push to GHCR
+
+env:
+  JAVA_VERSION: "21"
+  REGISTRY: ghcr.io
+  IMAGE_ORG: molfrsom
+
+jobs:
+  # ── Detect which services changed ─────────────────────────────────────────
+  detect-changes:
+    runs-on: ubuntu-latest
+    outputs:
+      services: ${{ steps.filter.outputs.changes }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            identity-access-service:
+              - 'services/identity-access-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            owner-org-service:
+              - 'services/owner-org-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            premises-service:
+              - 'services/premises-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            tag-inventory-service:
+              - 'services/tag-inventory-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            animal-registry-service:
+              - 'services/animal-registry-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            vet-health-service:
+              - 'services/vet-health-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            movement-tracking-service:
+              - 'services/movement-tracking-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            market-trade-service:
+              - 'services/market-trade-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            quarantine-export-service:
+              - 'services/quarantine-export-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            abattoir-service:
+              - 'services/abattoir-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            certification-service:
+              - 'services/certification-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            notification-service:
+              - 'services/notification-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            reporting-service:
+              - 'services/reporting-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+            traceability-service:
+              - 'services/traceability-service/**'
+              - 'libs/common-domain/**'
+              - 'services/pom.xml'
+
+  # ── Build, test, and push each changed service ────────────────────────────
+  build-and-test:
+    needs: detect-changes
+    if: ${{ needs.detect-changes.outputs.services != '[]' }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service: ${{ fromJson(needs.detect-changes.outputs.services) }}
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Java ${{ env.JAVA_VERSION }}
+        uses: actions/setup-java@v4
+        with:
+          java-version: ${{ env.JAVA_VERSION }}
+          distribution: temurin
+          cache: maven
+
+      - name: Install common-domain (shared library)
+        run: |
+          cd libs/common-domain
+          ./mvnw -B install -DskipTests -q
+
+      - name: Lint (Checkstyle)
+        run: |
+          cd services/${{ matrix.service }}
+          ../../mvnw -B checkstyle:check
+
+      - name: Build and unit tests
+        run: |
+          cd services/${{ matrix.service }}
+          ../../mvnw -B test
+
+      - name: Integration tests (TestContainers)
+        run: |
+          cd services/${{ matrix.service }}
+          ../../mvnw -B verify -DskipUnitTests
+
+      - name: Coverage gate (JaCoCo)
+        run: |
+          cd services/${{ matrix.service }}
+          ../../mvnw -B jacoco:check
+
+      - name: OWASP Dependency Check
+        if: github.ref == 'refs/heads/main'
+        run: |
+          cd services/${{ matrix.service }}
+          ../../mvnw -B org.owasp:dependency-check-maven:check
+
+      - name: Build Docker image
+        run: |
+          cd services/${{ matrix.service }}
+          docker build -t ${{ env.REGISTRY }}/${{ env.IMAGE_ORG }}/somlits/${{ matrix.service }}:${{ github.sha }} .
+
+      - name: Scan image (Trivy)
+        uses: aquasecurity/trivy-action@master
+        with:
+          image-ref: ${{ env.REGISTRY }}/${{ env.IMAGE_ORG }}/somlits/${{ matrix.service }}:${{ github.sha }}
+          format: sarif
+          output: trivy-${{ matrix.service }}.sarif
+          severity: HIGH,CRITICAL
+
+      - name: Upload Trivy results
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: trivy-${{ matrix.service }}.sarif
+
+      - name: Push Docker image to GHCR
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "${{ secrets.GITHUB_TOKEN }}" | docker login ${{ env.REGISTRY }} -u ${{ github.actor }} --password-stdin
+          docker push ${{ env.REGISTRY }}/${{ env.IMAGE_ORG }}/somlits/${{ matrix.service }}:${{ github.sha }}
+
+  # ── CodeQL Security Analysis ───────────────────────────────────────────────
+  codeql:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request' || github.ref == 'refs/heads/main'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: github/codeql-action/init@v3
+        with:
+          languages: java
+      - uses: github/codeql-action/autobuild@v3
+      - uses: github/codeql-action/analyze@v3

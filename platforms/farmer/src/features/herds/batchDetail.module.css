@@ -1,0 +1,241 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  padding: 1.5rem 2rem 4rem;
+  max-width: 860px;
+  margin: 0 auto;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 5rem;
+  color: #94a3b8;
+  font-size: 0.9rem;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* Header */
+.pageHeader {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+.backBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: none;
+  border: none;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #64748b;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+}
+.backBtn:hover { color: #0f172a; }
+.headerMeta {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex: 1;
+}
+.batchCode {
+  font-family: monospace;
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0b5ed7;
+}
+.statusBadge {
+  display: inline-flex;
+  align-items: center;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  padding: 3px 10px;
+  border-radius: 99px;
+  text-transform: uppercase;
+}
+.editBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-left: auto;
+  background: #0f172a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.editBtn:hover { background: #1e293b; }
+.editActions {
+  display: flex;
+  gap: 0.5rem;
+  margin-left: auto;
+}
+.cancelBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  color: #374151;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.cancelBtn:hover { background: #f8fafc; }
+.saveBtn {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.5rem 1.1rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+}
+.saveBtn:hover:not(:disabled) { background: #15803d; }
+.saveBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.errorBox {
+  background: #fef2f2;
+  color: #b91c1c;
+  border-radius: 8px;
+  padding: 0.6rem 1rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+/* Body */
+.body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* Section */
+.section {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+.sectionTitle {
+  font-size: 0.6rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* Fields */
+.fieldRow {
+  display: flex;
+  gap: 1.25rem;
+}
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  flex: 1;
+  min-width: 0;
+}
+.label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #374151;
+}
+.req { color: #dc2626; }
+.readOnly {
+  font-size: 0.875rem;
+  color: #111827;
+  font-weight: 500;
+  padding: 0.55rem 0.75rem;
+  background: #f8fafc;
+  border: 1.5px solid #f1f5f9;
+  border-radius: 8px;
+  min-height: 38px;
+  display: flex;
+  align-items: center;
+}
+.input, .select, .textarea {
+  padding: 0.55rem 0.75rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #111827;
+  background: #fff;
+  outline: none;
+  width: 100%;
+  box-sizing: border-box;
+  font-family: inherit;
+  transition: border-color 0.15s;
+}
+.input:focus, .select:focus, .textarea:focus { border-color: #0b5ed7; }
+.textarea { resize: vertical; }
+
+/* Species cards */
+.speciesCards {
+  display: flex;
+  gap: 0.625rem;
+}
+.speciesCard {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.75rem 0.5rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #374151;
+  font-family: inherit;
+  transition: all 0.15s;
+}
+.speciesCard:hover { border-color: #bfdbfe; background: #f8fafc; }
+.speciesCardActive { border-color: #0b5ed7 !important; background: #eff6ff !important; color: #1d4ed8 !important; }
+.speciesEmoji { font-size: 1.4rem; }
+
+/* Species display (read mode) */
+.speciesDisplay {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+.speciesEmojiLg { font-size: 2.5rem; }
+.speciesName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+.breedName {
+  font-size: 0.82rem;
+  color: #64748b;
+  margin-top: 2px;
+}

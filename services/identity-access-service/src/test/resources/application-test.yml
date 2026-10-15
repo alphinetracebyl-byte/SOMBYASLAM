@@ -1,0 +1,39 @@
+spring:
+  datasource:
+    url: jdbc:tc:postgresql:16:///somlits_test_identity_db
+    driver-class-name: org.testcontainers.jdbc.ContainerDatabaseDriver
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: false
+  flyway:
+    enabled: true
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9999/realms/somlits
+
+somlits:
+  keycloak:
+    server-url: http://localhost:9999
+    realm: somlits
+    admin:
+      username: admin
+      password: test
+  servicebus:
+    connection-string: "Endpoint=sb://localhost;SharedAccessKeyName=RootManageSharedAccessKey;SharedAccessKey=test;UseDevelopmentEmulator=true;"
+    topic: somlits.identity
+  outbox:
+    relay:
+      poll-interval-ms: 500
+      batch-size: 10
+
+spring.cloud.azure.keyvault.secret.enabled: false
+spring.cloud.azure.servicebus.enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info

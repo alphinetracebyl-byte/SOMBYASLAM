@@ -1,0 +1,232 @@
+/* ── Page ─────────────────────────────────────────────────────────── */
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  height: 100%;
+}
+
+/* ── Toolbar ──────────────────────────────────────────────────────── */
+.toolbar {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+  background: #fff;
+  border-radius: 12px;
+  padding: 0.875rem 1rem;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.searchWrap {
+  position: relative;
+  flex: 1;
+  min-width: 220px;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #9ca3af;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  color: #111827;
+  background: #f9fafb;
+  outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+}
+
+.searchInput:focus { border-color: #6366f1; background: #fff; }
+
+.filterRow {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  flex-wrap: wrap;
+}
+
+.filterSep {
+  width: 1px;
+  height: 20px;
+  background: #e5e7eb;
+  margin: 0 0.25rem;
+}
+
+.filterPill {
+  padding: 3px 12px;
+  border-radius: 20px;
+  border: 1.5px solid #e5e7eb;
+  background: #fff;
+  color: #64748b;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+
+.filterPill:hover { border-color: #94a3b8; background: #f8fafc; }
+.filterPillOn { border-color: #6366f1 !important; background: #eff6ff !important; color: #4f46e5 !important; }
+
+.statsRow {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-left: auto;
+}
+
+.statChip {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.statChipGreen {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #16a34a;
+  background: #f0fdf4;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.statChipGrey {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #64748b;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  padding: 3px 10px;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* ── Table wrapper ────────────────────────────────────────────────── */
+.tableWrap {
+  flex: 1;
+  overflow-y: auto;
+  background: #fff;
+  border-radius: 12px;
+  border: 1px solid #e5e7eb;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.8125rem;
+}
+
+.table thead th {
+  position: sticky;
+  top: 0;
+  background: #f8fafc;
+  border-bottom: 1.5px solid #e5e7eb;
+  padding: 0.625rem 0.875rem;
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  z-index: 1;
+}
+
+.row {
+  border-bottom: 1px solid #f1f5f9;
+  transition: background 0.1s;
+}
+
+.row:hover { background: #f8faff; }
+.row:last-child { border-bottom: none; }
+
+.table td {
+  padding: 0.625rem 0.875rem;
+  vertical-align: middle;
+  color: #0f172a;
+}
+
+/* ── Cell variants ────────────────────────────────────────────────── */
+.tdSeq     { color: #94a3b8; font-weight: 600; font-family: monospace; width: 40px; }
+.tdId      { font-family: monospace; font-weight: 700; color: #1d4ed8; white-space: nowrap; }
+.tdSpecies { display: flex; flex-direction: column; gap: 1px; }
+.breed     { font-size: 0.6875rem; color: #94a3b8; }
+.tdMeta    { color: #64748b; white-space: nowrap; }
+.dash      { color: #cbd5e1; }
+
+.tdPremises {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  max-width: 180px;
+}
+
+.premisesName { font-weight: 600; color: #0f172a; font-size: 0.8125rem; }
+.premisesCode { font-family: monospace; font-size: 0.6875rem; color: #94a3b8; }
+
+.tdBatch {
+  font-family: monospace;
+  font-size: 0.6875rem;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+/* ── Badges ───────────────────────────────────────────────────────── */
+.sexBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border-radius: 20px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.sexM { background: #eff6ff; color: #1d4ed8; }
+.sexF { background: #fdf2f8; color: #9d174d; }
+
+.taggedBadge {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: #f0fdf4;
+  color: #16a34a;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+.untaggedBadge {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  background: #f1f5f9;
+  color: #94a3b8;
+  border-radius: 20px;
+  white-space: nowrap;
+}
+
+/* ── Empty state ──────────────────────────────────────────────────── */
+.empty {
+  padding: 4rem 2rem;
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.875rem;
+}

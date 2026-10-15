@@ -1,0 +1,443 @@
+/* ── Widget shell ────────────────────────────────────────────── */
+.widget {
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 6px rgba(0,0,0,0.07);
+  padding: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.loadingText { font-size: 0.82rem; color: #94a3b8; }
+
+/* ── Header ─────────────────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.subtitle {
+  font-size: 0.8rem;
+  color: #64748b;
+  margin-top: 3px;
+}
+
+.statAvail { color: #1d4ed8; font-weight: 700; }
+.statOcc   { color: #a0622a; font-weight: 700; }
+
+.addBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.45rem 1rem;
+  background: #0f2170;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  white-space: nowrap;
+  flex-shrink: 0;
+  transition: background 0.13s;
+}
+.addBtn:hover { background: #0d1a5a; }
+
+/* ── Empty state ─────────────────────────────────────────────── */
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 2.5rem 1rem;
+  text-align: center;
+}
+
+.emptyIcon  { font-size: 2.5rem; }
+.emptyTitle { font-size: 1rem; font-weight: 700; color: #374151; }
+.emptySub   { font-size: 0.84rem; color: #94a3b8; max-width: 280px; }
+
+.addBtnLg {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+  padding: 0.55rem 1.25rem;
+  background: #0f2170;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.13s;
+}
+.addBtnLg:hover { background: #0d1a5a; }
+
+/* ── Pen grid ────────────────────────────────────────────────── */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 0.875rem;
+}
+
+/* ── Pen card ────────────────────────────────────────────────── */
+.card {
+  border-radius: 14px;
+  padding: 1.1rem 1rem 0.875rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  position: relative;
+  transition: box-shadow 0.15s, transform 0.15s;
+  border: 2px solid transparent;
+}
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+}
+
+.cardAvail { background: #fff;    border-color: #e2e8f0; }
+.cardOcc   { background: #1e3a8a; border-color: #1e3a8a; color: #fff; }
+.cardMnt   { background: #f9f0e8; border-color: #c4956a; }
+
+/* ── Card head ── */
+.cardHead { display: flex; flex-direction: column; gap: 2px; }
+
+.doorIcon { color: #94a3b8; margin-bottom: 4px; }
+.cardOcc .doorIcon { color: #93c5fd; }
+.cardMnt .doorIcon { color: #a0622a; }
+
+.penCode {
+  font-size: 1rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+}
+.cardOcc .penCode { color: #fff; }
+.cardMnt .penCode { color: #7c4f2a; }
+
+.penName {
+  font-size: 0.72rem;
+  color: #64748b;
+  font-weight: 500;
+}
+.cardOcc .penName { color: #93c5fd; }
+.cardMnt .penName { color: #a0622a; }
+
+/* ── Animal count block ── */
+.animalBlock {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.animalNum {
+  font-size: 1.85rem;
+  font-weight: 800;
+  line-height: 1;
+  color: #0f172a;
+  font-variant-numeric: tabular-nums;
+}
+.cardOcc .animalNum { color: #fff; }
+.cardMnt .animalNum { color: #7c4f2a; }
+
+.animalMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.animalLbl {
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  line-height: 1;
+}
+.cardOcc .animalLbl { color: #93c5fd; }
+.cardMnt .animalLbl { color: #a0622a; }
+
+.animalAvail {
+  font-size: 0.68rem;
+  font-weight: 500;
+  color: #94a3b8;
+  line-height: 1;
+}
+.cardOcc .animalAvail { color: #6ea8fe; }
+.cardMnt .animalAvail { color: #a0622a; }
+
+/* ── Fill bar ── */
+.fillWrap {
+  height: 5px;
+  background: #e2e8f0;
+  border-radius: 99px;
+  overflow: hidden;
+}
+.cardOcc .fillWrap { background: #2d4fa8; }
+.cardMnt .fillWrap { background: #dfc5a8; }
+
+.fillBar {
+  height: 100%;
+  border-radius: 99px;
+  transition: width 0.3s ease;
+}
+
+.fillLbl {
+  font-size: 0.67rem;
+  color: #94a3b8;
+  margin-top: -2px;
+}
+.cardOcc .fillLbl { color: #6ea8fe; }
+.cardMnt .fillLbl { color: #a0622a; }
+
+/* ── Species tags ── */
+.speciesRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.spTag {
+  font-size: 0.67rem;
+  font-weight: 600;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: #f1f5f9;
+  color: #475569;
+}
+.cardOcc .spTag { background: #2d4fa8; color: #bfdbfe; }
+.cardMnt .spTag { background: #eddcc8; color: #7c4f2a; }
+
+/* ── Status badge ── */
+.statusBadge {
+  display: inline-block;
+  width: 100%;
+  padding: 0.28rem 0;
+  border-radius: 5px;
+  font-size: 0.67rem;
+  font-weight: 800;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  text-align: center;
+}
+
+.badgeAvail { background: #dbeafe; color: #1d4ed8; }
+.badgeOcc   { background: #2d4fa8; color: #fff; }
+.badgeMnt   { background: #eddcc8; color: #7c4f2a; }
+
+/* ── Card action icons ── */
+.cardActions {
+  display: flex;
+  gap: 4px;
+  position: absolute;
+  top: 0.6rem;
+  right: 0.6rem;
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+.card:hover .cardActions { opacity: 1; }
+
+.iconBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.9);
+  color: #475569;
+  cursor: pointer;
+  transition: background 0.12s;
+}
+.iconBtn:hover { background: #f1f5f9; color: #0f172a; }
+
+.iconBtnDel:hover { background: #eddcc8; color: #7c4f2a; border-color: #c4956a; }
+
+/* ── Add / Edit form card ────────────────────────────────────── */
+.formCard {
+  border: 2px solid #e0e9ff;
+  border-radius: 14px;
+  padding: 1.25rem 1.25rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  background: #f8faff;
+}
+
+.formTitle {
+  font-size: 0.9rem;
+  font-weight: 700;
+  color: #1e3a8a;
+}
+
+.formRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 0.75rem;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.label {
+  font-size: 0.76rem;
+  font-weight: 700;
+  color: #374151;
+}
+
+.req { color: #a0622a; }
+.opt { color: #94a3b8; font-weight: 400; }
+
+.input {
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-family: inherit;
+  color: #0f172a;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s;
+}
+.input:focus { border-color: #0f2170; box-shadow: 0 0 0 3px rgba(15,33,112,0.1); }
+
+/* ── Species checkboxes ── */
+.spField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.spChecks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.spCheck {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #374151;
+  cursor: pointer;
+  user-select: none;
+}
+
+/* ── Error ── */
+.errorMsg {
+  font-size: 0.8rem;
+  color: #7c4f2a;
+  background: #fdf0e4;
+  border: 1px solid #c4956a;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+}
+
+/* ── Form actions ── */
+.formActions {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: flex-end;
+}
+
+.cancelBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 1rem;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s;
+}
+.cancelBtn:hover:not(:disabled) { background: #e2e8f0; }
+.cancelBtn:disabled { opacity: 0.5; cursor: default; }
+
+.saveBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 1.25rem;
+  background: #0f2170;
+  border: none;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s;
+}
+.saveBtn:hover:not(:disabled) { background: #0d1a5a; }
+.saveBtn:disabled { opacity: 0.6; cursor: default; }
+
+/* ── Confirm delete overlay ── */
+.confirmOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2,8,23,0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 300;
+  backdrop-filter: blur(3px);
+  padding: 1rem;
+}
+
+.confirmBox {
+  background: #fff;
+  border-radius: 14px;
+  padding: 1.75rem;
+  width: 100%;
+  max-width: 360px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.25);
+}
+
+.confirmTitle { font-size: 1rem; font-weight: 700; color: #0f172a; }
+.confirmMsg   { font-size: 0.875rem; color: #64748b; line-height: 1.5; }
+
+.confirmBtns { display: flex; gap: 0.5rem; justify-content: flex-end; margin-top: 0.25rem; }
+
+.deleteBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.5rem 1rem;
+  background: #a0622a;
+  border: none;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: #fff;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.12s;
+}
+.deleteBtn:hover { background: #7c4f2a; }

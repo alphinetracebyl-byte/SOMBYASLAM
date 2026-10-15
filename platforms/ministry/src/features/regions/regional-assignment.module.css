@@ -1,0 +1,680 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+/* Header */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.headerRight {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-shrink: 0;
+}
+
+.addRegionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.625rem 1.125rem;
+  background: #1e3a8a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+  white-space: nowrap;
+}
+
+.addRegionBtn:hover { background: #1e40af; }
+
+.title {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.sub {
+  font-size: 0.8125rem;
+  color: #64748b;
+  margin: 0.2rem 0 0;
+}
+
+.headerStats {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  padding: 0.75rem 1.25rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+  flex-shrink: 0;
+}
+
+.headerStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.headerStatVal {
+  font-size: 1.375rem;
+  font-weight: 800;
+  color: #0f172a;
+  line-height: 1;
+}
+
+.headerStatLbl {
+  font-size: 0.6875rem;
+  color: #94a3b8;
+  margin-top: 2px;
+}
+
+.headerStatDiv {
+  width: 1px;
+  height: 32px;
+  background: #e2e8f0;
+}
+
+/* Region grid */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 0.75rem;
+}
+
+@media (max-width: 1600px) { .grid { grid-template-columns: repeat(7, 1fr); } }
+@media (max-width: 1300px) { .grid { grid-template-columns: repeat(6, 1fr); } }
+@media (max-width: 1000px) { .grid { grid-template-columns: repeat(4, 1fr); } }
+@media (max-width: 700px)  { .grid { grid-template-columns: repeat(3, 1fr); } }
+
+.regionCard {
+  background: #fff;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 0.875rem;
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s, background 0.15s;
+}
+
+.regionCard:hover {
+  border-color: #93c5fd;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.06);
+}
+
+.regionCardActive {
+  border-color: #0b5ed7 !important;
+  background: #eff6ff;
+  box-shadow: 0 0 0 3px rgba(11,94,215,0.1) !important;
+}
+
+.regionTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+  gap: 0.25rem;
+}
+
+.regionName {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #0f172a;
+  line-height: 1.3;
+}
+
+.regionCode {
+  font-size: 0.6875rem;
+  color: #94a3b8;
+  font-family: monospace;
+  margin-top: 1px;
+}
+
+.regionCounts {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.regionCount {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+}
+
+.regionCountNum {
+  font-size: 1.125rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.regionCountLbl {
+  font-size: 0.625rem;
+  color: #94a3b8;
+  text-align: center;
+  margin-top: 2px;
+}
+
+.regionCountDiv {
+  width: 1px;
+  height: 24px;
+  background: #e2e8f0;
+}
+
+.noOfficers {
+  font-size: 0.6875rem;
+  color: #cbd5e1;
+  margin-top: 0.5rem;
+  text-align: center;
+}
+
+/* Skeleton */
+.skelCard {
+  background: linear-gradient(90deg, #f1f5f9 25%, #e2e8f0 50%, #f1f5f9 75%);
+  background-size: 400px 100%;
+  animation: shimmer 1.4s infinite;
+  border-radius: 12px;
+  height: 116px;
+}
+
+@keyframes shimmer {
+  from { background-position: -400px 0; }
+  to   { background-position:  400px 0; }
+}
+
+/* Panel */
+.panel {
+  background: #fff;
+  border: 1.5px solid #bfdbfe;
+  border-radius: 14px;
+  overflow: hidden;
+  box-shadow: 0 4px 20px rgba(11,94,215,0.08);
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.125rem 1.375rem;
+  border-bottom: 1px solid #f1f5f9;
+  gap: 1rem;
+}
+
+.panelTitle {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.panelSub {
+  font-size: 0.8125rem;
+  color: #64748b;
+  margin-top: 1px;
+}
+
+.panelActions {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-shrink: 0;
+}
+
+.assignBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 1rem;
+  background: #1e3a8a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.assignBtn:hover { background: #1e40af; }
+
+.assignBtnSm {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.45rem 0.875rem;
+  background: #1e3a8a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  margin-top: 0.25rem;
+  transition: background 0.15s;
+}
+
+.assignBtnSm:hover { background: #1e40af; }
+
+.panelCloseBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #64748b;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.panelCloseBtn:hover { background: #f1f5f9; color: #0f172a; }
+
+.panelEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.625rem;
+  padding: 3rem 1rem;
+  color: #94a3b8;
+  font-size: 0.875rem;
+}
+
+/* Officer table */
+.tableWrap {
+  overflow-x: auto;
+}
+
+.officerTable {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.officerTh {
+  padding: 0.625rem 1rem;
+  text-align: left;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #94a3b8;
+  border-bottom: 1px solid #f1f5f9;
+  white-space: nowrap;
+}
+
+.officerTr {
+  cursor: pointer;
+  transition: background 0.12s;
+}
+
+.officerTr:last-child .officerTd { border-bottom: none; }
+.officerTr:hover { background: #f0f4ff; }
+
+.officerTd {
+  padding: 0.875rem 1rem;
+  font-size: 0.875rem;
+  color: #334155;
+  border-bottom: 1px solid #f8fafc;
+  vertical-align: middle;
+}
+
+/* Avatar + user cell */
+.userCell {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: #e0e9ff;
+  color: #1d4ed8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.officerName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+  white-space: nowrap;
+}
+
+.officerEmail {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  white-space: nowrap;
+}
+
+/* Reused in modal candidate rows */
+.officerInfo {
+  flex: 1;
+  min-width: 0;
+}
+
+.officerPhone {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  font-size: 0.75rem;
+  color: #64748b;
+  margin-top: 1px;
+}
+
+.officerMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.35rem;
+}
+
+.metaItem {
+  font-size: 0.6875rem;
+  color: #64748b;
+  background: #f1f5f9;
+  border-radius: 4px;
+  padding: 0.1rem 0.45rem;
+  white-space: nowrap;
+}
+
+.officerBadges {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.statusBadge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+
+.roleBadge {
+  display: inline-block;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 0.2rem 0.5rem;
+  border-radius: 20px;
+  white-space: nowrap;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+.removeBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.75rem;
+  background: #1e3a8a;
+  color: #fff;
+  border: 1px solid #1e3a8a;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.removeBtn:hover:not(:disabled) { background: #1e40af; }
+.removeBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Assign modal */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(15, 23, 42, 0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+  padding: 1rem;
+  backdrop-filter: blur(2px);
+}
+
+.modal {
+  background: #fff;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 560px;
+  max-height: 80vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  overflow: hidden;
+}
+
+.modalHead {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  gap: 1rem;
+  flex-shrink: 0;
+}
+
+.modalTitle {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.modalSub {
+  font-size: 0.8125rem;
+  color: #64748b;
+  margin-top: 2px;
+}
+
+.modalCloseBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  background: none;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  color: #64748b;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+
+.modalCloseBtn:hover { background: #f1f5f9; }
+
+.modalFilters {
+  display: flex;
+  gap: 0.625rem;
+  padding: 1rem 1.5rem;
+  border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
+}
+
+.searchWrap {
+  position: relative;
+  flex: 1;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.75rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #94a3b8;
+  pointer-events: none;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2.125rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #0f172a;
+  font-family: inherit;
+  outline: none;
+  box-sizing: border-box;
+  transition: border-color 0.15s;
+  background: #fff;
+}
+
+.searchInput:focus { border-color: #0b5ed7; }
+.searchInput::placeholder { color: #94a3b8; }
+
+.roleSel {
+  padding: 0.5rem 0.75rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  color: #334155;
+  font-family: inherit;
+  outline: none;
+  cursor: pointer;
+  background: #fff;
+  transition: border-color 0.15s;
+  flex-shrink: 0;
+}
+
+.roleSel:focus { border-color: #0b5ed7; }
+
+.modalList {
+  overflow-y: auto;
+  flex: 1;
+}
+
+.modalEmpty {
+  text-align: center;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  padding: 3rem 1rem;
+}
+
+.candidateRow {
+  display: flex;
+  align-items: center;
+  gap: 0.875rem;
+  padding: 0.75rem 1.5rem;
+  border-bottom: 1px solid #f8fafc;
+  transition: background 0.12s;
+}
+
+.candidateRow:last-child { border-bottom: none; }
+.candidateRow:hover { background: #f8fafc; }
+
+.currentRegion {
+  color: #f59e0b;
+}
+
+.assignRowBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.3rem 0.875rem;
+  background: #1e3a8a;
+  color: #fff;
+  border: 1px solid #1e3a8a;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+
+.assignRowBtn:hover:not(:disabled) { background: #1e40af; }
+.assignRowBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* Add Region form (inside modal) */
+.addRegionForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.375rem 1.5rem 1.5rem;
+}
+
+.addRegionField {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.addRegionLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.req { color: #ef4444; }
+
+.addRegionInput {
+  padding: 0.625rem 0.875rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #0f172a;
+  font-family: inherit;
+  outline: none;
+  transition: border-color 0.15s;
+  background: #fff;
+}
+
+.addRegionInput:focus { border-color: #0b5ed7; }
+.addRegionInput::placeholder { color: #94a3b8; }
+
+.addRegionHint {
+  font-size: 0.75rem;
+  color: #94a3b8;
+}
+
+.addRegionError {
+  font-size: 0.8125rem;
+  color: #dc2626;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 6px;
+  padding: 0.5rem 0.75rem;
+}
+
+.addRegionActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 0.625rem;
+  padding-top: 0.25rem;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }
+.spin { animation: spin 0.7s linear infinite; }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+
+    <springProperty scope="context" name="serviceName"  source="somlits.service.name"    defaultValue="traceability-service"/>
+    <springProperty scope="context" name="serviceVersion" source="somlits.service.version" defaultValue="unknown"/>
+    <springProperty scope="context" name="environment"  source="info.app.environment"    defaultValue="local"/>
+
+    <!-- JSON appender for all non-local profiles -->
+    <springProfile name="!local">
+        <appender name="JSON_STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder class="net.logstash.logback.encoder.LogstashEncoder">
+                <customFields>{"service":"${serviceName}","version":"${serviceVersion}","environment":"${environment}"}</customFields>
+                <fieldNames>
+                    <timestamp>timestamp</timestamp>
+                    <message>message</message>
+                    <logger>logger</logger>
+                    <thread>thread</thread>
+                </fieldNames>
+                <includeContext>false</includeContext>
+                <includeMdc>true</includeMdc>
+                <throwableConverter class="net.logstash.logback.stacktrace.ShortenedThrowableConverter">
+                    <maxDepthPerCause>10</maxDepthPerCause>
+                    <rootCauseFirst>true</rootCauseFirst>
+                </throwableConverter>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="JSON_STDOUT"/>
+        </root>
+    </springProfile>
+
+    <!-- Human-readable appender for local development -->
+    <springProfile name="local">
+        <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+            <encoder>
+                <pattern>%d{HH:mm:ss.SSS} %highlight(%-5level) [%cyan(%X{correlationId:-no-corr-id})] %logger{36} - %msg%n</pattern>
+            </encoder>
+        </appender>
+
+        <root level="INFO">
+            <appender-ref ref="CONSOLE"/>
+        </root>
+
+        <logger name="com.somlits" level="DEBUG"/>
+    </springProfile>
+
+</configuration>

@@ -1,0 +1,7 @@
+packages:
+  - 'platforms/*'
+  - 'libs/design-tokens'
+allowBuilds:
+  esbuild: true
+  iltorb: false
+  msw: true

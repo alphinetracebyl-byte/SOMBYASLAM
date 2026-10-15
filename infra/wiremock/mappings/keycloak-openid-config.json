@@ -1,0 +1,36 @@
+{
+  "mappings": [
+    {
+      "name": "Keycloak OIDC discovery (test stub)",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/realms/somlits/.well-known/openid-configuration"
+      },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": {
+          "issuer": "http://localhost:{{request.headers.Host}}/realms/somlits",
+          "jwks_uri": "http://localhost:{{request.headers.Host}}/realms/somlits/protocol/openid-connect/certs",
+          "token_endpoint": "http://localhost:{{request.headers.Host}}/realms/somlits/protocol/openid-connect/token",
+          "authorization_endpoint": "http://localhost:{{request.headers.Host}}/realms/somlits/protocol/openid-connect/auth",
+          "response_types_supported": ["code", "token", "id_token"],
+          "subject_types_supported": ["public"],
+          "id_token_signing_alg_values_supported": ["RS256"]
+        }
+      }
+    },
+    {
+      "name": "Keycloak JWKS (returns empty for test — services use Testcontainers Keycloak in integration tests)",
+      "request": {
+        "method": "GET",
+        "urlPattern": "/realms/somlits/protocol/openid-connect/certs"
+      },
+      "response": {
+        "status": 200,
+        "headers": { "Content-Type": "application/json" },
+        "jsonBody": { "keys": [] }
+      }
+    }
+  ]
+}

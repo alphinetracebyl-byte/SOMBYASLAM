@@ -1,0 +1,547 @@
+/* ── Layout ───────────────────────────────────────────────────────────── */
+.pageWrap {
+  display: flex;
+  height: calc(100vh - 64px);
+  overflow: hidden;
+  background: #f8fafc;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Left Sidebar ─────────────────────────────────────────────────────── */
+.sidebar {
+  width: 320px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  background: #ffffff;
+  border-right: 1px solid #e5e7eb;
+  overflow: hidden;
+}
+
+.sidebarHeader {
+  padding: 1.125rem 1rem 0.75rem;
+  border-bottom: 1px solid #f1f5f9;
+  flex-shrink: 0;
+}
+
+.sidebarTitle {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.625rem;
+}
+
+.sidebarTitleText {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.sidebarCount {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  background: #e0e7ff;
+  color: #3730a3;
+  padding: 1px 7px;
+  border-radius: 20px;
+}
+
+.searchWrap {
+  position: relative;
+}
+
+.searchIcon {
+  position: absolute;
+  left: 0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  color: #9ca3af;
+}
+
+.searchInput {
+  width: 100%;
+  padding: 0.5rem 0.75rem 0.5rem 2rem;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  color: #111827;
+  outline: none;
+  font-family: inherit;
+  box-sizing: border-box;
+  background: #f9fafb;
+  transition: border-color 0.15s;
+}
+
+.searchInput:focus {
+  border-color: #6366f1;
+  background: #fff;
+}
+
+.premisesList {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.premisesCard {
+  width: 100%;
+  background: #ffffff;
+  border: 1.5px solid #f1f5f9;
+  border-left: 3px solid transparent;
+  border-radius: 10px;
+  padding: 0.75rem 0.875rem;
+  text-align: left;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  transition: border-color 0.15s, background 0.15s;
+  font-family: inherit;
+}
+
+.premisesCard:hover {
+  border-color: #bfdbfe;
+  border-left-color: #93c5fd;
+  background: #f8faff;
+}
+
+.premisesCardActive {
+  border-color: #bfdbfe !important;
+  border-left-color: #2563eb !important;
+  background: #eff6ff !important;
+}
+
+.premisesName {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.premisesCode {
+  font-size: 0.6875rem;
+  font-family: monospace;
+  color: #64748b;
+  letter-spacing: 0.02em;
+}
+
+.premisesOwner {
+  font-size: 0.75rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 1px;
+}
+
+.premisesRegion {
+  font-size: 0.75rem;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 1px;
+}
+
+.premisesFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+}
+
+.premisesStats {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.statPill {
+  font-size: 0.6875rem;
+  color: #475569;
+  background: #f1f5f9;
+  border-radius: 6px;
+  padding: 1px 7px;
+}
+
+/* ── Status badges ────────────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* ── Right Panel ──────────────────────────────────────────────────────── */
+.rightPanel {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.rightScroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1.25rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+/* ── Empty State ──────────────────────────────────────────────────────── */
+.emptyState {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  color: #94a3b8;
+  padding: 5rem 2rem;
+}
+
+.emptyStateTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #64748b;
+  margin: 0;
+}
+
+.emptyStateSub {
+  font-size: 0.875rem;
+  color: #94a3b8;
+  margin: 0;
+}
+
+/* ── Premises Detail Header ───────────────────────────────────────────── */
+.detailHeader {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  padding: 1.125rem 1.375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  font-size: 0.75rem;
+  color: #9ca3af;
+  flex-wrap: wrap;
+}
+
+.breadcrumbLink {
+  color: #6366f1;
+  font-weight: 500;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+
+.breadcrumbLink:hover {
+  color: #4f46e5;
+}
+
+.breadcrumbActive {
+  color: #374151;
+  font-weight: 600;
+}
+
+.detailTitle {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.detailCode {
+  font-family: monospace;
+  font-size: 0.75rem;
+  color: #64748b;
+  background: #f1f5f9;
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+.ownerStrip {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.625rem;
+}
+
+.ownerChip {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  color: #475569;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 3px 10px;
+}
+
+/* ── Batch Grid ───────────────────────────────────────────────────────── */
+.batchSectionTitle {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.batchGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 0.875rem;
+}
+
+.batchCard {
+  background: #fff;
+  border: 1.5px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 1rem 1.125rem;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  text-align: left;
+  font-family: inherit;
+}
+
+.batchCard:hover {
+  border-color: #6366f1;
+  box-shadow: 0 4px 12px rgba(99,102,241,0.12);
+  transform: translateY(-1px);
+}
+
+.batchCardCode {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #4f46e5;
+  font-family: monospace;
+}
+
+.batchCardName {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #0f172a;
+}
+
+.batchCardSpecies {
+  font-size: 0.75rem;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.batchCardFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 4px;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+
+.batchCardDate {
+  font-size: 0.6875rem;
+  color: #9ca3af;
+}
+
+.batchCardCount {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #475569;
+  background: #f1f5f9;
+  border-radius: 6px;
+  padding: 2px 8px;
+}
+
+/* ── Animal Grid ──────────────────────────────────────────────────────── */
+.batchDetailHeader {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  padding: 1.125rem 1.375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.batchDetailTitle {
+  font-size: 1.0625rem;
+  font-weight: 700;
+  color: #0f172a;
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  flex-wrap: wrap;
+}
+
+.detailChips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.detailChip {
+  font-size: 0.75rem;
+  color: #475569;
+  background: #f8fafc;
+  border: 1px solid #e2e8f0;
+  border-radius: 6px;
+  padding: 3px 10px;
+}
+
+.animalGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(185px, 1fr));
+  gap: 0.875rem;
+}
+
+/* ── Animal Card ──────────────────────────────────────────────────────── */
+.animalCard {
+  background: #fff;
+  border-radius: 14px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  transition: box-shadow 0.15s, transform 0.15s;
+}
+
+.animalCard:hover {
+  box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+  transform: translateY(-1px);
+}
+
+.animalSeqRow {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  width: 100%;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.animalSeq {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0b5ed7;
+  font-family: monospace;
+}
+
+.sexBadge {
+  display: inline-flex;
+  align-items: center;
+  padding: 1px 8px;
+  border-radius: 20px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+}
+
+.sexM { background: #eff6ff; color: #1d4ed8; }
+.sexF { background: #fdf2f8; color: #9d174d; }
+
+.animalPhotoWrap {
+  position: relative;
+  width: 100%;
+}
+
+.animalPhotoImg {
+  width: 100%;
+  aspect-ratio: 4/3;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 1px solid #e2e8f0;
+  display: block;
+}
+
+.animalPhotoUpload {
+  width: 100%;
+  aspect-ratio: 4/3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  border: 2px dashed #cbd5e1;
+  border-radius: 10px;
+  background: #f8fafc;
+  cursor: pointer;
+  font-family: inherit;
+  padding: 0;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.animalPhotoUpload:hover {
+  border-color: #0b5ed7;
+  background: #eff6ff;
+}
+
+.animalPhotoUploadMain {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #334155;
+}
+
+.animalPhotoUploadSub {
+  font-size: 0.6875rem;
+  color: #94a3b8;
+}
+
+.animalMeta {
+  font-size: 0.75rem;
+  color: #64748b;
+  text-align: center;
+}
+
+.animalIdText {
+  font-size: 0.75rem;
+  font-weight: 700;
+  color: #0b5ed7;
+  font-family: monospace;
+  text-align: center;
+}
+
+.statusChip {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  padding: 2px 8px;
+  border-radius: 20px;
+  text-transform: uppercase;
+}
+
+.statusTagged {
+  background: #d1fae5;
+  color: #065f46;
+}
+
+.statusUntagged {
+  background: #f1f5f9;
+  color: #64748b;
+}

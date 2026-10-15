@@ -1,0 +1,206 @@
+@keyframes spin    { to { transform: rotate(360deg); } }
+@keyframes shimmer { from { background-position: -600px 0; } to { background-position: 600px 0; } }
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  font-family: 'Inter', system-ui, sans-serif;
+  padding-bottom: 3rem;
+}
+
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.title { font-size: 1.375rem; font-weight: 700; color: #0f172a; margin: 0 0 0.2rem; }
+.sub   { font-size: 0.8125rem; color: #64748b; margin: 0; }
+
+.refreshBtn {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.5rem;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  cursor: pointer;
+  color: #64748b;
+  transition: background 0.15s;
+  flex-shrink: 0;
+}
+.refreshBtn:hover:not(:disabled) { background: #f1f5f9; }
+.refreshBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+.spin { animation: spin 0.7s linear infinite; }
+
+/* ── Two-panel layout ── */
+.panels {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  align-items: start;
+}
+
+/* ── Panel ── */
+.panel {
+  background: #f8fafc;
+  border-radius: 16px;
+  border: 1.5px solid #e2e8f0;
+  padding: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-height: 240px;
+}
+
+.panelHead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.panelTitle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.panelBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 24px;
+  height: 22px;
+  padding: 0 7px;
+  border-radius: 11px;
+  font-size: 0.75rem;
+  font-weight: 700;
+}
+
+.badgeAmber { background: #fffbeb; color: #b45309; border: 1px solid #fcd34d; }
+.badgeGreen { background: #f0fdf4; color: #15803d; border: 1px solid #86efac; }
+
+.panelEmpty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 2.5rem 1rem;
+  color: #94a3b8;
+  font-size: 0.875rem;
+  flex: 1;
+}
+
+/* ── Movement card ── */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem 1.125rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  border: 1.5px solid #f1f5f9;
+  transition: box-shadow 0.15s;
+}
+
+.card:hover { box-shadow: 0 3px 10px rgba(0,0,0,0.1); }
+
+.cardTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.code {
+  font-family: 'Courier New', monospace;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.animals {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #64748b;
+  background: #f1f5f9;
+  padding: 2px 8px;
+  border-radius: 10px;
+}
+
+.routeBlock {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.routePin {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #475569;
+}
+
+.routePinDest {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: #0f172a;
+}
+
+.purpose {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  font-style: italic;
+}
+
+/* ── Confirm button ── */
+.confirmBtn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  width: 100%;
+  padding: 0.625rem 1rem;
+  border: none;
+  border-radius: 9px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  font-family: inherit;
+  transition: opacity 0.15s, transform 0.1s;
+  color: #fff;
+  margin-top: 4px;
+}
+
+.confirmBtn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+.confirmBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+.confirmAmber { background: #d97706; }
+.confirmGreen { background: #059669; }
+
+/* ── Skeleton ── */
+.skeleton {
+  height: 130px;
+  border-radius: 12px;
+  background: linear-gradient(90deg, #f3f4f6 25%, #e9eaec 50%, #f3f4f6 75%);
+  background-size: 600px 100%;
+  animation: shimmer 1.4s infinite;
+}
+
+@media (max-width: 680px) {
+  .panels { grid-template-columns: 1fr; }
+}

@@ -1,0 +1,70 @@
+{
+  "name": "@somlits/ministry",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "type-check": "tsc --noEmit",
+    "lint": "eslint src --max-warnings 0",
+    "format": "prettier --write src",
+    "format:check": "prettier --check src",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
+    "bundlesize": "bundlesize"
+  },
+  "dependencies": {
+    "@somlits/design-tokens": "workspace:*",
+    "@supabase/supabase-js": "^2.112.2",
+    "@tanstack/react-table": "^8.20.5",
+    "axios": "^1.7.7",
+    "i18next": "^23.15.1",
+    "i18next-browser-languagedetector": "^8.0.0",
+    "i18next-http-backend": "^2.6.1",
+    "keycloak-js": "^25.0.6",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^1.25.0",
+    "qrcode.react": "3.1.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-hook-form": "^7.53.0",
+    "react-i18next": "^15.0.2",
+    "react-leaflet": "^4.2.1",
+    "react-router-dom": "^6.26.2",
+    "recharts": "^2.12.7",
+    "uuid": "^10.0.0",
+    "zod": "^3.23.8",
+    "zustand": "^5.0.0"
+  },
+  "devDependencies": {
+    "@hookform/resolvers": "^3.9.1",
+    "@testing-library/jest-dom": "^6.5.0",
+    "@testing-library/react": "^16.0.1",
+    "@testing-library/user-event": "^14.5.2",
+    "@types/leaflet": "^1.9.12",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "@types/uuid": "^10.0.0",
+    "@typescript-eslint/eslint-plugin": "^8.7.0",
+    "@typescript-eslint/parser": "^8.7.0",
+    "@vitejs/plugin-react": "^4.3.2",
+    "@vitest/coverage-v8": "^2.1.1",
+    "bundlesize": "^0.18.2",
+    "eslint": "^9.11.1",
+    "eslint-plugin-react-hooks": "^5.1.0",
+    "jsdom": "^25.0.1",
+    "msw": "^2.4.10",
+    "prettier": "^3.3.3",
+    "typescript": "^5.6.2",
+    "vite": "^5.4.8",
+    "vitest": "^2.1.1"
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/assets/index-*.js",
+      "maxSize": "500 kB"
+    }
+  ]
+}

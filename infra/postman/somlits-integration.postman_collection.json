@@ -1,0 +1,252 @@
+{
+  "info": {
+    "name": "SOMLITS Integration Tests",
+    "_postman_id": "somlits-integration-v1",
+    "description": "End-to-end API integration tests for SOMLITS microservices",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "{{apiBaseUrl}}" },
+    { "key": "token", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Get service account token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Token acquired', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "  var json = pm.response.json();",
+                  "  pm.collectionVariables.set('token', json.access_token);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{keycloakUrl}}/realms/somlits/protocol/openid-connect/token",
+            "body": {
+              "mode": "urlencoded",
+              "urlencoded": [
+                { "key": "grant_type", "value": "client_credentials" },
+                { "key": "client_id", "value": "{{serviceClientId}}" },
+                { "key": "client_secret", "value": "{{serviceClientSecret}}" }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Checks",
+      "item": [
+        {
+          "name": "Identity Access Service health",
+          "request": {
+            "method": "GET",
+            "url": "{{identityServiceUrl}}/actuator/health",
+            "auth": { "type": "noauth" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Identity service UP', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json().status).to.equal('UP');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Owner Org Service health",
+          "request": {
+            "method": "GET",
+            "url": "{{ownerOrgServiceUrl}}/actuator/health",
+            "auth": { "type": "noauth" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Owner org service UP', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json().status).to.equal('UP');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Animal Registry Service health",
+          "request": {
+            "method": "GET",
+            "url": "{{animalRegistryServiceUrl}}/actuator/health",
+            "auth": { "type": "noauth" }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Animal registry service UP', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json().status).to.equal('UP');",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Owner Registration Flow",
+      "item": [
+        {
+          "name": "Register farmer owner",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Owner created', function() {",
+                  "  pm.response.to.have.status(201);",
+                  "  var json = pm.response.json();",
+                  "  pm.collectionVariables.set('ownerId', json.id);",
+                  "  pm.collectionVariables.set('ownerCode', json.ownerCode);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{ownerOrgServiceUrl}}/internal/v1/owners",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"ownerType\": \"INDIVIDUAL\",\n  \"fullName\": \"Abdi Hassan Mohamed\",\n  \"nationalIdType\": \"NATIONAL_ID\",\n  \"nationalIdNumber\": \"TEST-INT-001\",\n  \"phone\": \"+252611000001\",\n  \"region\": \"BN\",\n  \"district\": \"BN-BN\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Premises Registration Flow",
+      "item": [
+        {
+          "name": "Register premises",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Premises created', function() {",
+                  "  pm.response.to.have.status(201);",
+                  "  var json = pm.response.json();",
+                  "  pm.collectionVariables.set('premisesId', json.id);",
+                  "  pm.collectionVariables.set('premisesCode', json.premisesCode);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{premisesServiceUrl}}/internal/v1/premises",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"premisesName\": \"Integration Test Farm\",\n  \"premisesType\": \"FARM\",\n  \"ownerId\": \"{{ownerId}}\",\n  \"ownerCode\": \"{{ownerCode}}\",\n  \"gpsLatitude\": 2.0469,\n  \"gpsLongitude\": 45.3182,\n  \"regionCode\": \"BN\",\n  \"districtCode\": \"BN-BN\",\n  \"allowedSpecies\": \"CATTLE,CAMEL\"\n}"
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Animal Registration Flow",
+      "item": [
+        {
+          "name": "Register animal",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Animal registered', function() {",
+                  "  pm.response.to.have.status(201);",
+                  "  var json = pm.response.json();",
+                  "  pm.collectionVariables.set('animalId', json.id);",
+                  "  pm.collectionVariables.set('animalCode', json.animalCode);",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "url": "{{animalRegistryServiceUrl}}/internal/v1/animals",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" },
+              { "key": "Content-Type", "value": "application/json" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"species\": \"CATTLE\",\n  \"breed\": \"Somali Zebu\",\n  \"sex\": \"MALE\",\n  \"dateOfBirth\": \"2023-01-15\",\n  \"ownerId\": \"{{ownerId}}\",\n  \"ownerCode\": \"{{ownerCode}}\",\n  \"premisesId\": \"{{premisesId}}\",\n  \"premisesCode\": \"{{premisesCode}}\",\n  \"colorMarkings\": \"Brown with white patch\"\n}"
+            }
+          }
+        },
+        {
+          "name": "Verify animal retrieval",
+          "request": {
+            "method": "GET",
+            "url": "{{animalRegistryServiceUrl}}/internal/v1/animals/{{animalId}}",
+            "header": [
+              { "key": "Authorization", "value": "Bearer {{token}}" }
+            ]
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test('Animal retrieved', function() {",
+                  "  pm.response.to.have.status(200);",
+                  "  pm.expect(pm.response.json().id).to.equal(pm.collectionVariables.get('animalId'));",
+                  "});"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

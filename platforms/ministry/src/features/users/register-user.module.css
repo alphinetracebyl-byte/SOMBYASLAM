@@ -1,0 +1,597 @@
+/* ── Page shell ── */
+.page {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+/* ── Left: Help panel ── */
+.helpPanel {
+  width: 280px;
+  flex-shrink: 0;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 2rem 1.625rem;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  align-self: flex-start;
+  position: sticky;
+  top: 1rem;
+}
+
+.helpBrand {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.helpBrandIcon {
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  background: #0f172a;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 800;
+  color: #93c5fd;
+  letter-spacing: -0.5px;
+  flex-shrink: 0;
+}
+
+.helpBrandName {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #0f172a;
+}
+
+.helpBrandSub {
+  font-size: 0.75rem;
+  color: #94a3b8;
+  margin-top: 1px;
+}
+
+.helpBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.helpBlockTitle {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #94a3b8;
+  margin-bottom: 0.125rem;
+}
+
+.helpStep {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.helpStepNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: #f1f5f9;
+  border: 1.5px solid #e2e8f0;
+  color: #475569;
+  font-size: 0.75rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.helpStepLabel {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: #334155;
+}
+
+.helpNext {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.helpNextNum {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: #0f172a;
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: 800;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+
+.helpNextTitle {
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 3px;
+}
+
+.helpNextBody {
+  font-size: 0.75rem;
+  color: #64748b;
+  line-height: 1.5;
+}
+
+.helpNote {
+  background: #f0f9ff;
+  border: 1px solid #bae6fd;
+  border-radius: 10px;
+  padding: 0.875rem 1rem;
+  font-size: 0.75rem;
+  color: #0369a1;
+  line-height: 1.6;
+}
+
+.backBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.5rem 0.875rem;
+  background: #f8fafc;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #475569;
+  cursor: pointer;
+  transition: background 0.15s;
+  width: fit-content;
+}
+.backBtn:hover { background: #f1f5f9; }
+
+/* ── Right: Form column ── */
+.formCol {
+  flex: 1;
+  min-width: 0;
+  align-self: flex-start;
+}
+
+.formHeaderCard {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.25rem 1.375rem;
+  margin-bottom: 1.25rem;
+}
+
+.formTitle {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.25rem;
+}
+
+.formSub {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ── Form section card ── */
+.formSection {
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  padding: 1.25rem 1.375rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.sectionTitle {
+  font-size: 0.8125rem;
+  font-weight: 700;
+  color: #0f172a;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid #f1f5f9;
+}
+
+/* ── Fields ── */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.375rem;
+}
+
+.row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.label {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.required {
+  color: #e11d48;
+  font-weight: 700;
+  margin-left: 2px;
+}
+
+.labelNote {
+  font-size: 0.75rem;
+  font-weight: 400;
+  color: #94a3b8;
+}
+
+.input {
+  padding: 0.625rem 0.875rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.875rem;
+  color: #0f172a;
+  background: #fff;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.input:focus {
+  border-color: #0b5ed7;
+  box-shadow: 0 0 0 3px rgba(11,94,215,0.1);
+}
+
+.pwdWrap {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.pwdToggle {
+  position: absolute;
+  right: 0.625rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #94a3b8;
+  padding: 0;
+  line-height: 1;
+}
+.pwdToggle:hover { color: #475569; }
+
+.textarea {
+  padding: 0.625rem 0.875rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.875rem;
+  color: #0f172a;
+  background: #fff;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.textarea:focus {
+  border-color: #0b5ed7;
+  box-shadow: 0 0 0 3px rgba(11,94,215,0.1);
+}
+
+/* ── Region card grid ── */
+.regionGrid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.5rem;
+}
+
+.regionCard {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 0.5rem 0.375rem;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  cursor: pointer;
+  font-family: inherit;
+  transition: border-color 0.12s, background 0.12s;
+}
+.regionCard:hover { border-color: #93c5fd; background: #eff6ff; }
+
+.regionCardActive {
+  border-color: #0b5ed7;
+  background: #eff6ff;
+}
+
+.regionCode {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #0b5ed7;
+  font-family: monospace;
+}
+
+.regionName {
+  font-size: 0.6rem;
+  color: #64748b;
+  text-align: center;
+  line-height: 1.2;
+}
+
+/* ── Actions ── */
+.actions {
+  display: flex;
+  gap: 0.75rem;
+  justify-content: flex-end;
+  padding-top: 0.5rem;
+}
+
+.cancelBtn {
+  padding: 0.625rem 1.25rem;
+  background: #f8fafc;
+  color: #475569;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.cancelBtn:hover { background: #f1f5f9; }
+
+.submitBtn {
+  padding: 0.625rem 1.75rem;
+  background: #0f172a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.submitBtn:hover:not(:disabled) { background: #1e293b; }
+.submitBtn:disabled { opacity: 0.6; cursor: not-allowed; }
+
+/* ── Identity document upload grid ── */
+.docGrid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+.docZone {
+  position: relative;
+  border: 2px dashed #e2e8f0;
+  border-radius: 10px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #f8fafc;
+  transition: border-color 0.15s, background 0.15s;
+  min-height: 140px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.docZone:hover { border-color: #94a3b8; background: #f1f5f9; }
+
+.docPreviewImg {
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+  display: block;
+}
+
+.docRemoveBtn {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: rgba(15,23,42,0.65);
+  color: #fff;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2;
+}
+.docRemoveBtn:hover { background: #dc2626; }
+
+.docPlaceholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.375rem;
+  color: #94a3b8;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-align: center;
+  padding: 1.5rem 0.75rem;
+}
+
+.docHint {
+  font-size: 0.6875rem;
+  font-weight: 400;
+  color: #cbd5e1;
+}
+
+.docInput { display: none; }
+
+/* ── Error ── */
+.errorBox {
+  font-size: 0.8125rem;
+  color: #b91c1c;
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: 8px;
+  padding: 0.625rem 0.875rem;
+}
+
+/* ── Right: Help card ── */
+.helpCard {
+  width: 460px;
+  flex-shrink: 0;
+  background: #fff;
+  border: 1px solid #e2e8f0;
+  border-radius: 14px;
+  padding: 1.5rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.625rem;
+  align-self: flex-start;
+  position: sticky;
+  top: 1rem;
+}
+
+.helpCardSection {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.helpCardTitle {
+  font-size: 0.625rem;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #94a3b8;
+}
+
+.helpCardList {
+  margin: 0;
+  padding: 0 0 0 1.125rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.helpCardList li {
+  font-size: 0.75rem;
+  color: #475569;
+  line-height: 1.5;
+}
+
+.helpCardPills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.pill {
+  display: inline-block;
+  padding: 0.2rem 0.6rem;
+  background: #f1f5f9;
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  color: #334155;
+}
+
+.roleGuideList {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+}
+
+.roleGuideItem {
+  padding: 0.5rem 0.625rem;
+  background: #f8fafc;
+  border-radius: 7px;
+  border-left: 3px solid #e2e8f0;
+}
+
+.roleGuideRole {
+  font-size: 0.6875rem;
+  font-weight: 700;
+  color: #0f172a;
+  letter-spacing: 0.03em;
+  margin-bottom: 2px;
+}
+
+.roleGuideDesc {
+  font-size: 0.6875rem;
+  color: #64748b;
+  line-height: 1.4;
+}
+
+/* ── Success page ── */
+.successPage {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  gap: 1rem;
+  text-align: center;
+}
+
+.successTitle {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0;
+}
+
+.successSub {
+  font-size: 0.9375rem;
+  color: #64748b;
+  margin: 0;
+}
+
+.successActions {
+  display: flex;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.successBtn {
+  padding: 0.625rem 1.375rem;
+  background: #0b5ed7;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.successBtnOutline {
+  padding: 0.625rem 1.375rem;
+  background: #fff;
+  color: #334155;
+  border: 1.5px solid #e2e8f0;
+  border-radius: 8px;
+  font: inherit;
+  font-size: 0.875rem;
+  font-weight: 600;
+  cursor: pointer;
+}

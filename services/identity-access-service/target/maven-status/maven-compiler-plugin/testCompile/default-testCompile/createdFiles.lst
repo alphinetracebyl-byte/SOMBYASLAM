@@ -1,0 +1,9 @@
+com\somlits\identityaccess\domain\model\UserAccountTest.class
+com\somlits\identityaccess\domain\model\InvitationTest.class
+com\somlits\identityaccess\integration\InvitationIntegrationTest.class
+com\somlits\identityaccess\TestcontainersConfig.class
+com\somlits\identityaccess\domain\model\DelegateGrantTest.class
+com\somlits\identityaccess\integration\UserRegistrationIntegrationTest.class
+com\somlits\identityaccess\integration\DelegationIntegrationTest.class
+com\somlits\identityaccess\api\AuthApiTest.class
+com\somlits\identityaccess\IdentityAccessApplicationTest.class

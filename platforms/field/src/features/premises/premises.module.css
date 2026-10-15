@@ -1,0 +1,190 @@
+/* ============================================================
+   Premises — CSS Module
+   ============================================================ */
+
+.page {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+/* ---- Header ---- */
+.header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.title {
+  font-size: 1.375rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin: 0 0 0.25rem;
+}
+
+.sub {
+  font-size: 0.875rem;
+  color: #64748b;
+  margin: 0;
+}
+
+/* ---- Filter row ---- */
+.filterRow {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.filterLabel {
+  font-size: 0.8125rem;
+  font-weight: 600;
+  color: #64748b;
+  white-space: nowrap;
+}
+
+.filterSelect {
+  height: 36px;
+  padding: 0 0.75rem;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: #0f172a;
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+.filterSelect:focus {
+  border-color: #0b5ed7;
+  box-shadow: 0 0 0 3px rgba(11, 94, 215, 0.12);
+}
+
+/* ---- Loading / Empty ---- */
+.loading {
+  text-align: center;
+  padding: 3rem 1rem;
+  color: #64748b;
+  font-size: 0.9375rem;
+}
+
+.empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  padding: 4rem 2rem;
+  color: #94a3b8;
+  font-size: 0.9375rem;
+}
+
+/* ---- Error banner ---- */
+.errorBanner {
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  color: #dc2626;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+}
+
+.successBanner {
+  background: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  color: #16a34a;
+  border-radius: 8px;
+  padding: 0.75rem 1rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* ---- Premises grid ---- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+/* ---- Premises card ---- */
+.card {
+  background: #fff;
+  border-radius: 14px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06);
+  padding: 1.125rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  transition: box-shadow 0.15s;
+}
+
+.card:hover { box-shadow: 0 4px 16px rgba(0, 0, 0, 0.10); }
+
+.cardTop {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.cardCode {
+  font-size: 0.9375rem;
+  font-weight: 700;
+  color: #0f172a;
+  font-family: monospace;
+}
+
+.cardName {
+  font-size: 0.875rem;
+  color: #334155;
+  font-weight: 500;
+}
+
+.cardMeta {
+  font-size: 0.8125rem;
+  color: #64748b;
+}
+
+/* ---- Status badge ---- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.badgeActive    { background: #dcfce7; color: #16a34a; }
+.badgeSubmitted { background: #fef3c7; color: #d97706; }
+.badgeSuspended { background: #fef2f2; color: #dc2626; }
+.badgeDefault   { background: #f1f5f9; color: #64748b; }
+
+/* ---- Approve button ---- */
+.approveBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 1rem;
+  height: 34px;
+  background: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.8125rem;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 0.25rem;
+  align-self: flex-start;
+  transition: background 0.15s;
+}
+
+.approveBtn:hover:not(:disabled) { background: #15803d; }
+.approveBtn:disabled { opacity: 0.6; cursor: not-allowed; }

@@ -1,0 +1,15 @@
+#!/bin/sh
+# Maven Wrapper script for SOMLITS services
+# Requires Maven 3.9+ to be installed at MAVEN_HOME or on PATH.
+# This wrapper script is intentionally minimal for a monorepo where CI provides Maven.
+
+if [ -n "$MAVEN_HOME" ]; then
+  MVN="$MAVEN_HOME/bin/mvn"
+elif command -v mvn >/dev/null 2>&1; then
+  MVN="mvn"
+else
+  echo "ERROR: mvn not found. Install Maven 3.9+ and ensure it is on your PATH."
+  exit 1
+fi
+
+exec "$MVN" "$@"

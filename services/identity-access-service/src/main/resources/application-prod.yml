@@ -1,0 +1,48 @@
+# Production overrides — secrets injected via Azure Key Vault references (Managed Identity).
+
+spring:
+  datasource:
+    url: ${SOMLITS_DB_URL}
+    username: ${SOMLITS_DB_USER}
+    password: ${SOMLITS_DB_PASSWORD}
+    hikari:
+      maximum-pool-size: 20
+      minimum-idle: 5
+      connection-timeout: 5000
+      idle-timeout: 300000
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${SOMLITS_KEYCLOAK_ISSUER_URI}
+
+  cloud:
+    azure:
+      keyvault:
+        secret:
+          endpoint: ${SOMLITS_KEYVAULT_ENDPOINT}
+      servicebus:
+        connection-string: ${SOMLITS_SERVICEBUS_CONNECTION_STRING}
+
+logging:
+  level:
+    root: INFO
+    com.somlits: INFO
+
+springdoc:
+  swagger-ui:
+    enabled: false
+  api-docs:
+    enabled: false
+
+management:
+  endpoint:
+    health:
+      show-details: never
+
+somlits:
+  africas-talking:
+    api-key: ${SOMLITS_AFRICAS_TALKING_API_KEY}
+    username: ${SOMLITS_AFRICAS_TALKING_USERNAME}
+    base-url: https://api.africastalking.com
